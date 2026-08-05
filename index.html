@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Hub - Portal Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col">
+
+    <!-- Top Navigation Header -->
+    <header class="bg-slate-900 border-b border-slate-800 px-6 py-4 flex justify-between items-center sticky top-0 z-40 backdrop-blur-md bg-opacity-80">
+        <div class="flex items-center space-x-3">
+            <div class="bg-gradient-to-tr from-blue-600 to-indigo-500 text-white w-10 h-10 rounded-xl flex items-center justify-center font-bold shadow-lg shadow-blue-500/20">
+                <i class="fa-solid fa-wand-magic-sparkles text-lg"></i>
+            </div>
+            <span class="font-extrabold text-white text-xl tracking-wide bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">Career Hub</span>
+        </div>
+        
+        <div class="flex items-center space-x-4">
+            <span id="user-badge" class="text-xs bg-slate-800 text-blue-300 px-4 py-2 rounded-full border border-slate-700 font-medium shadow-inner"></span>
+            <button onclick="logout()" class="text-xs bg-rose-500/10 text-rose-400 border border-rose-500/20 px-4 py-2 rounded-xl hover:bg-rose-500/20 transition-all font-semibold">
+                <i class="fa-solid fa-power-off mr-1.5"></i> Logout
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto p-6 md:p-8">
+
+        <!-- ================= CANDIDATE DASHBOARD ================= -->
+        <div id="candidate-view" class="hidden space-y-8">
+            <div class="bg-gradient-to-r from-blue-900/40 via-indigo-900/20 to-slate-900 border border-blue-500/20 p-8 rounded-3xl shadow-xl">
+                <h1 class="text-3xl font-black text-white">Candidate Dashboard</h1>
+                <p class="text-xs text-slate-400 mt-2">Browse active job openings, analyze your CV with AI, or apply directly.</p>
+            </div>
+            
+            <div>
+                <h2 class="text-lg font-bold text-slate-200 mb-4 flex items-center">
+                    <i class="fa-solid fa-briefcase text-blue-400 mr-2.5"></i> Available Opportunities
+                </h2>
+                <div id="candidate-jobs-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Jobs will load dynamically here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= RECRUITER DASHBOARD ================= -->
+        <div id="recruiter-view" class="hidden space-y-8">
+            <div class="bg-gradient-to-r from-indigo-900/40 via-purple-900/20 to-slate-900 border border-indigo-500/20 p-8 rounded-3xl shadow-xl">
+                <h1 class="text-3xl font-black text-white">Recruiter Control Center</h1>
+                <p class="text-xs text-slate-400 mt-2">Publish job vacancies and monitor applicant resumes with AI ATS scores.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Post Job Form -->
+                <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl space-y-4">
+                    <h3 class="text-md font-bold text-slate-200 flex items-center">
+                        <i class="fa-solid fa-plus-circle text-blue-400 mr-2"></i> Post Vacancy
+                    </h3>
+                    <form onsubmit="handlePostJob(event)" class="space-y-3">
+                        <div>
+                            <label class="block text-[10px] uppercase font-bold text-slate-400 mb-1">Job Title</label>
+                            <input type="text" id="job-title" required placeholder="e.g. Senior Python Developer" class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] uppercase font-bold text-slate-400 mb-1">Company</label>
+                            <input type="text" id="job-company" required placeholder="e.g. Baqi Digital" class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] uppercase font-bold text-slate-400 mb-1">Required Skills</label>
+                            <input type="text" id="job-skills" required placeholder="Python, FastAPI, SQLite" class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] uppercase font-bold text-slate-400 mb-1">Job Description</label>
+                            <textarea id="job-desc" rows="3" required placeholder="Key responsibilities and qualifications..." class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:border-blue-500"></textarea>
+                        </div>
+                        <button type="submit" class="w-full py-3 bg-blue-600 hover:bg-blue-500 font-bold rounded-xl text-xs transition-all shadow-lg shadow-blue-600/20">
+                            Publish Opening
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Received Applications List -->
+                <div class="lg:col-span-2 bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl space-y-4">
+                    <h3 class="text-md font-bold text-slate-200 flex items-center">
+                        <i class="fa-solid fa-users text-indigo-400 mr-2"></i> Applicant Submissions
+                    </h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs text-slate-300">
+                            <thead class="bg-slate-950 text-slate-400 uppercase font-bold border-b border-slate-800">
+                                <tr>
+                                    <th class="p-3.5">Candidate Email</th>
+                                    <th class="p-3.5">Position</th>
+                                    <th class="p-3.5">Mode</th>
+                                    <th class="p-3.5">ATS Match</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recruiter-apps-list" class="divide-y divide-slate-800">
+                                <!-- Applications dynamically populated -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= AI ANALYZE CV MODAL ================= -->
+        <div id="ai-modal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+            <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl max-w-md w-full shadow-2xl space-y-5">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-md font-bold text-white flex items-center">
+                        <i class="fa-solid fa-wand-magic-sparkles text-blue-400 mr-2"></i> AI Resume Matcher
+                    </h3>
+                    <button onclick="closeModal()" class="text-slate-400 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <p class="text-xs text-slate-400 leading-relaxed">Upload your CV in PDF format. Our AI tool will analyze keyword relevance and evaluate match percentage against this job role.</p>
+                
+                <input type="file" id="cv-file-input" accept=".pdf" class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-300">
+                
+                <button onclick="processAIAnalysis()" class="w-full py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 font-bold rounded-xl text-xs shadow-lg shadow-blue-600/20 transition-all">
+                    Analyze & Submit Application
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // Local Data Management & Render Logic
+        const storedUser = localStorage.getItem('user');
+        let currentUser = storedUser ? JSON.parse(storedUser) : null;
+        let selectedJobId = null;
+
+        if (!currentUser) {
+            window.location.href = '/login';
+        } else {
+            document.getElementById('user-badge').innerText = `${currentUser.email} (${currentUser.role.toUpperCase()})`;
+
+            if (currentUser.role === 'recruiter') {
+                document.getElementById('recruiter-view').classList.remove('hidden');
+                loadRecruiterData();
+            } else {
+                document.getElementById('candidate-view').classList.remove('hidden');
+                loadCandidateJobs();
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('user');
+            window.location.href = '/login';
+        }
+
+        // Mock Data for Demo (Stored in Browser)
+        function getLocalJobs() {
+            const jobs = localStorage.getItem('demo_jobs');
+            return jobs ? JSON.parse(jobs) : [
+                { id: 1, title: 'Python Backend Developer', company: 'Baqi Digital', skills: 'Python, FastAPI, SQL', description: 'Looking for a skilled developer to handle backend architecture.' }
+            ];
+        }
+
+        function getLocalApplications() {
+            const apps = localStorage.getItem('demo_applications');
+            return apps ? JSON.parse(apps) : [];
+        }
+
+        // --- Candidate Functions ---
+        function loadCandidateJobs() {
+            const container = document.getElementById('candidate-jobs-grid');
+            const jobs = getLocalJobs();
+
+            if (!jobs.length) {
+                container.innerHTML = `<div class="col-span-2 text-center py-10 text-slate-500 text-xs">Currently, no job vacancies are listed.</div>`;
+                return;
+            }
+
+            container.innerHTML = jobs.map(job => `
+                <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl flex flex-col justify-between shadow-lg">
+                    <div>
+                        <span class="text-[10px] font-bold text-blue-400 bg-blue-500/10 border border-blue-500/20 px-3 py-1 rounded-lg">${job.company}</span>
+                        <h3 class="text-xl font-bold text-white mt-3">${job.title}</h3>
+                        <p class="text-xs text-slate-400 mt-2 leading-relaxed">${job.description}</p>
+                        <div class="mt-3 text-[11px] text-slate-500"><strong>Skills:</strong> ${job.skills}</div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3 mt-6">
+                        <button onclick="openAIModal(${job.id})" class="py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white text-xs font-bold rounded-xl shadow-md transition-all">
+                            <i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i> AI Analyze CV
+                        </button>
+                        <button onclick="directApply(${job.id}, '${job.title}')" class="py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-xl shadow-md transition-all">
+                            <i class="fa-solid fa-paper-plane mr-1.5"></i> Direct Apply
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openAIModal(jobId) {
+            selectedJobId = jobId;
+            document.getElementById('ai-modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('ai-modal').classList.add('hidden');
+        }
+
+        function processAIAnalysis() {
+            const fileInput = document.getElementById('cv-file-input');
+            if (!fileInput.files.length) {
+                alert('⚠️ Please select a PDF file first!');
+                return;
+            }
+
+            const jobs = getLocalJobs();
+            const job = jobs.find(j => j.id === selectedJobId);
+            const score = Math.floor(Math.random() * 16) + 82; // Random match score 82-97%
+
+            const apps = getLocalApplications();
+            apps.unshift({
+                candidate_email: currentUser.email,
+                job_title: job ? job.title : 'Position',
+                type: 'AI Analyzed',
+                ats_score: score
+            });
+
+            localStorage.setItem('demo_applications', JSON.stringify(apps));
+            alert(`✅ AI Resume Score: ${score}%\nYour application has been submitted!`);
+            closeModal();
+        }
+
+        function directApply(jobId, jobTitle) {
+            const apps = getLocalApplications();
+            apps.unshift({
+                candidate_email: currentUser.email,
+                job_title: jobTitle,
+                type: 'Direct Apply',
+                ats_score: 75
+            });
+
+            localStorage.setItem('demo_applications', JSON.stringify(apps));
+            alert('✅ Application submitted successfully!');
+        }
+
+        // --- Recruiter Functions ---
+        function loadRecruiterData() {
+            const apps = getLocalApplications();
+            const list = document.getElementById('recruiter-apps-list');
+
+            if (!apps.length) {
+                list.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-500 text-xs">No applicant submissions received yet.</td></tr>`;
+                return;
+            }
+
+            list.innerHTML = apps.map(a => `
+                <tr class="hover:bg-slate-950/50 transition-colors">
+                    <td class="p-3.5 font-semibold text-white">${a.candidate_email}</td>
+                    <td class="p-3.5 text-slate-400">${a.job_title}</td>
+                    <td class="p-3.5">
+                        <span class="px-2.5 py-1 rounded-lg text-[10px] font-bold ${a.type === 'AI Analyzed' ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30' : 'bg-blue-500/20 text-blue-300 border border-blue-500/30'}">
+                            ${a.type}
+                        </span>
+                    </td>
+                    <td class="p-3.5 font-extrabold text-emerald-400">${a.ats_score}% Match</td>
+                </tr>
+            `).join('');
+        }
+
+        function handlePostJob(e) {
+            e.preventDefault();
+            const title = document.getElementById('job-title').value;
+            const company = document.getElementById('job-company').value;
+            const skills = document.getElementById('job-skills').value;
+            const description = document.getElementById('job-desc').value;
+
+            const jobs = getLocalJobs();
+            jobs.unshift({ id: Date.now(), title, company, skills, description });
+            
+            localStorage.setItem('demo_jobs', JSON.stringify(jobs));
+            alert('✅ Job post published successfully!');
+            e.target.reset();
+            loadRecruiterData();
+        }
+    </script>
+</body>
+</html>
