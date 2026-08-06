@@ -1,20 +1,15 @@
 import sqlite3
-from fastapi import FastAPI, HTTPException
+from pathlib import Path
+from typing import Optional
+from contextlib import asynccontextmanager
+from fastapi import FastAPI, HTTPException, UploadFile, File
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
+import pypdf
 
-app = FastAPI(title="Career Hub Portal")
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-DB_NAME = "database.db"
+BASE_DIR = Path(__file__).resolve().parent
+DB_NAME = BASE_DIR / "database.db"
 
 def get_db():
     conn = sqlite3.connect(DB_NAME)
@@ -27,81 +22,192 @@ def init_db():
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+            full_name TEXT NOT NULL,
             email TEXT UNIQUE NOT NULL,
             password TEXT NOT NULL,
             role TEXT NOT NULL
         )
     """)
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS jobs (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            company TEXT NOT NULL,
+            description TEXT NOT NULL,
+            recruiter_email TEXT NOT NULL
+        )
+    """)
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS applications (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            job_id INTEGER NOT NULL,
+            candidate_name TEXT NOT NULL,
+            candidate_email TEXT NOT NULL,
+            cv_text TEXT NOT NULL,
+            match_score INTEGER NOT NULL,
+            status TEXT DEFAULT 'Pending'
+        )
+    """)
     conn.commit()
     conn.close()
 
-@app.on_event("startup")
-def startup():
+# Modern Lifespan Event Handler (Startup error fix)
+@asynccontextmanager
+async def lifespan(app: FastAPI):
     init_db()
+    yield
 
-# --- Schemas ---
+app = FastAPI(title="Career Hub", lifespan=lifespan)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 class AuthModel(BaseModel):
-    email: EmailStr
+    email: str
     password: str
+    full_name: Optional[str] = None
     role: str
 
-# --- Page Routes ---
+class JobModel(BaseModel):
+    title: str
+    company: str
+    description: str
+    recruiter_email: str
+
+class ApplyModel(BaseModel):
+    job_id: int
+    candidate_name: str
+    candidate_email: str
+    cv_text: str
+    match_score: int
+
+# HTML Pages Routes
 @app.get("/")
-def home_page():
-    return FileResponse("signup.html")
+def home():
+    file_path = BASE_DIR / "signup.html"
+    if not file_path.exists():
+        raise HTTPException(status_code=404, detail="signup.html file missing in project folder!")
+    return FileResponse(file_path)
 
 @app.get("/signup")
 def signup_page():
-    return FileResponse("signup.html")
+    file_path = BASE_DIR / "signup.html"
+    if not file_path.exists():
+        raise HTTPException(status_code=404, detail="signup.html file missing in project folder!")
+    return FileResponse(file_path)
 
 @app.get("/login")
 def login_page():
-    return FileResponse("login.html")
+    file_path = BASE_DIR / "login.html"
+    if not file_path.exists():
+        raise HTTPException(status_code=404, detail="login.html file missing in project folder!")
+    return FileResponse(file_path)
 
 @app.get("/dashboard")
 def dashboard_page():
-    return FileResponse("index.html")
+    file_path = BASE_DIR / "dashboard.html"
+    if not file_path.exists():
+        raise HTTPException(status_code=404, detail="dashboard.html file missing in project folder!")
+    return FileResponse(file_path)
 
-# --- APIs ---
+# APIs
 @app.post("/api/signup")
 def signup(data: AuthModel):
     conn = get_db()
     cursor = conn.cursor()
-    clean_email = data.email.lower().strip()
-    clean_role = data.role.lower().strip()
-
-    cursor.execute("SELECT id FROM users WHERE email = ?", (clean_email,))
-    if cursor.fetchone():
+    try:
+        cursor.execute(
+            "INSERT INTO users (full_name, email, password, role) VALUES (?, ?, ?, ?)",
+            (data.full_name.strip() if data.full_name else "", data.email.lower().strip(), data.password, data.role.lower().strip())
+        )
+        conn.commit()
+    except sqlite3.IntegrityError:
         conn.close()
-        raise HTTPException(status_code=400, detail="Account with this email already exists.")
-
-    cursor.execute(
-        "INSERT INTO users (email, password, role) VALUES (?, ?, ?)",
-        (clean_email, data.password, clean_role)
-    )
-    conn.commit()
+        raise HTTPException(status_code=400, detail="Email is already registered!")
+    except Exception as e:
+        conn.close()
+        raise HTTPException(status_code=500, detail=str(e))
     conn.close()
-    return {"status": "success", "message": "Account created successfully!"}
+    return {"status": "ok"}
 
 @app.post("/api/login")
 def login(data: AuthModel):
     conn = get_db()
     cursor = conn.cursor()
-    clean_email = data.email.lower().strip()
-    clean_role = data.role.lower().strip()
-
     cursor.execute(
-        "SELECT id, email, role FROM users WHERE email = ? AND password = ? AND role = ?",
-        (clean_email, data.password, clean_role)
+        "SELECT full_name, email, role FROM users WHERE email=? AND password=?",
+        (data.email.lower().strip(), data.password)
     )
     user = cursor.fetchone()
     conn.close()
-
     if not user:
-        raise HTTPException(status_code=401, detail="Invalid Email, Password, or Role selected.")
+        raise HTTPException(status_code=401, detail="Invalid Email or Password!")
+    if user["role"] != data.role.lower().strip():
+        raise HTTPException(status_code=401, detail=f"Account registered as {user['role'].capitalize()}")
+    return {"status": "ok", "user": dict(user)}
 
-    return {
-        "status": "success",
-        "message": "Login successful!",
-        "user": {"email": user["email"], "role": user["role"]}
-    }
+@app.post("/api/parse-pdf")
+async def parse_pdf(file: UploadFile = File(...)):
+    if not file.filename.endswith('.pdf'):
+        raise HTTPException(status_code=400, detail="Only PDF files are supported!")
+    try:
+        reader = pypdf.PdfReader(file.file)
+        text = ""
+        for page in reader.pages:
+            text += page.extract_text() or ""
+        return {"text": text.strip()}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"PDF Parsing Error: {str(e)}")
+
+@app.post("/api/jobs")
+def post_job(data: JobModel):
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute(
+        "INSERT INTO jobs (title, company, description, recruiter_email) VALUES (?, ?, ?, ?)",
+        (data.title, data.company, data.description, data.recruiter_email)
+    )
+    conn.commit()
+    conn.close()
+    return {"status": "ok"}
+
+@app.get("/api/jobs")
+def get_jobs():
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM jobs ORDER BY id DESC")
+    jobs = [dict(r) for r in cursor.fetchall()]
+    conn.close()
+    return jobs
+
+@app.post("/api/apply")
+def apply_job(data: ApplyModel):
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute(
+        "INSERT INTO applications (job_id, candidate_name, candidate_email, cv_text, match_score) VALUES (?, ?, ?, ?, ?)",
+        (data.job_id, data.candidate_name, data.candidate_email, data.cv_text, data.match_score)
+    )
+    conn.commit()
+    conn.close()
+    return {"status": "ok"}
+
+@app.get("/api/applications")
+def get_applications(email: str):
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT a.id, a.candidate_name, a.candidate_email, a.cv_text, a.match_score, a.status, j.title as job_title
+        FROM applications a
+        JOIN jobs j ON a.job_id = j.id
+        WHERE j.recruiter_email = ?
+        ORDER BY a.id DESC
+    """, (email,))
+    apps = [dict(r) for r in cursor.fetchall()]
+    conn.close()
+    return apps
