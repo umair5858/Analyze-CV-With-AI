@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Hub | Candidate Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body{font-family:'Inter',sans-serif}
+        .font-display{font-family:'Manrope',sans-serif}
+        .font-mono{font-family:'JetBrains Mono',monospace}
+        ::-webkit-scrollbar{width:8px;height:8px}
+        ::-webkit-scrollbar-thumb{background:#334155;border-radius:8px}
+        ::-webkit-scrollbar-track{background:transparent}
+
+        @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+        .fade-up{animation:fadeUp .5s ease forwards}
+        @keyframes popIn{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
+        .pop-in{animation:popIn .35s ease forwards}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        .spin{animation:spin 1s linear infinite}
+        @keyframes ringDraw{from{stroke-dashoffset:251}}
+        .ring-draw{animation:ringDraw 1.1s cubic-bezier(.4,0,.2,1) forwards}
+        .modal-backdrop{backdrop-filter:blur(6px)}
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen">
+
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="absolute -top-40 -left-40 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 -right-40 w-96 h-96 bg-emerald-600/10 rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="relative z-10 flex min-h-screen">
+
+        <!-- SIDEBAR -->
+        <aside class="w-64 shrink-0 border-r border-slate-900 bg-slate-950/80 flex flex-col justify-between fixed h-screen">
+            <div>
+                <div class="flex items-center gap-2 px-6 py-6">
+                    <div class="w-9 h-9 bg-gradient-to-tr from-indigo-600 to-blue-500 rounded-lg flex items-center justify-center font-black text-white text-sm">CH</div>
+                    <span class="text-lg font-display font-extrabold text-white">Career Hub</span>
+                </div>
+                <nav class="px-4 space-y-1 mt-4">
+                    <button onclick="showTab('browse')" id="nav-browse" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition">
+                        <i class="fa-solid fa-magnifying-glass w-4"></i> Browse Jobs
+                    </button>
+                    <button onclick="showTab('applications')" id="nav-applications" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition">
+                        <i class="fa-solid fa-list-check w-4"></i> My Applications
+                    </button>
+                </nav>
+            </div>
+            <div class="p-4 border-t border-slate-900">
+                <div class="flex items-center gap-3 px-2 py-2">
+                    <div id="avatarInitial" class="w-9 h-9 rounded-full bg-indigo-600 flex items-center justify-center text-sm font-bold text-white">?</div>
+                    <div class="min-w-0">
+                        <p id="userName" class="text-sm font-semibold text-white truncate">—</p>
+                        <p class="text-xs text-slate-500">Candidate</p>
+                    </div>
+                </div>
+                <button onclick="logout()" class="w-full mt-2 flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold text-rose-400 hover:bg-rose-500/10 transition">
+                    <i class="fa-solid fa-right-from-bracket"></i> Log Out
+                </button>
+            </div>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="flex-1 ml-64 p-8 max-w-6xl">
+
+            <!-- BROWSE TAB -->
+            <section id="tab-browse">
+                <div class="flex items-center justify-between mb-6 fade-up">
+                    <div>
+                        <h1 class="text-2xl font-display font-extrabold text-white">Browse Jobs</h1>
+                        <p class="text-sm text-slate-400 mt-1">Find a role, then let AI check how well you match it.</p>
+                    </div>
+                    <div class="relative">
+                        <i class="fa-solid fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
+                        <input id="searchInput" oninput="debouncedSearch()" type="text" placeholder="Search title, company, skill..."
+                            class="bg-slate-900 border border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-indigo-500 w-72 transition">
+                    </div>
+                </div>
+                <div id="jobsList" class="grid md:grid-cols-2 gap-5"></div>
+                <div id="jobsEmpty" class="hidden text-center py-20 text-slate-500">
+                    <i class="fa-solid fa-inbox text-3xl mb-3"></i>
+                    <p class="text-sm">No jobs match your search right now.</p>
+                </div>
+            </section>
+
+            <!-- APPLICATIONS TAB -->
+            <section id="tab-applications" class="hidden">
+                <div class="mb-6 fade-up">
+                    <h1 class="text-2xl font-display font-extrabold text-white">My Applications</h1>
+                    <p class="text-sm text-slate-400 mt-1">Track your AI match score for every role you've applied to.</p>
+                </div>
+                <div id="applicationsList" class="space-y-4"></div>
+                <div id="applicationsEmpty" class="hidden text-center py-20 text-slate-500">
+                    <i class="fa-solid fa-file-circle-question text-3xl mb-3"></i>
+                    <p class="text-sm">You haven't applied to any jobs yet.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- APPLY MODAL -->
+    <div id="applyModal" class="hidden fixed inset-0 z-50 modal-backdrop bg-slate-950/70 flex items-center justify-center p-4">
+        <div class="pop-in bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+            <div class="p-6 border-b border-slate-800 flex items-start justify-between">
+                <div>
+                    <p class="text-xs text-indigo-400 font-mono" id="modalCompany">Company</p>
+                    <h2 class="text-xl font-display font-extrabold text-white" id="modalTitle">Job Title</h2>
+                </div>
+                <button onclick="closeModal()" class="text-slate-500 hover:text-white transition"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <div class="p-6 space-y-5">
+                <div id="modalJobMeta" class="flex flex-wrap gap-2 text-xs"></div>
+                <div>
+                    <p class="text-xs font-semibold text-slate-400 mb-1">Requirements</p>
+                    <p id="modalRequirements" class="text-sm text-slate-300 leading-relaxed"></p>
+                </div>
+
+                <div id="uploadZone">
+                    <p class="text-xs font-semibold text-slate-400 mb-2">Upload your resume (PDF)</p>
+                    <label for="resumeFile" class="flex flex-col items-center justify-center gap-2 border-2 border-dashed border-slate-800 hover:border-indigo-500/60 rounded-xl py-8 cursor-pointer transition">
+                        <i class="fa-solid fa-cloud-arrow-up text-2xl text-indigo-400"></i>
+                        <span class="text-xs text-slate-400" id="fileLabel">Click to choose a PDF file</span>
+                    </label>
+                    <input type="file" id="resumeFile" accept=".pdf" class="hidden" onchange="onFileChosen()">
+                </div>
+
+                <button id="analyzeBtn" onclick="analyzeAndApply()" disabled
+                    class="w-full bg-indigo-600 disabled:bg-slate-800 disabled:text-slate-500 hover:bg-indigo-500 text-white font-semibold py-3.5 rounded-xl shadow-lg shadow-indigo-600/20 transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    <span>AI Analyze CV &amp; Apply</span>
+                </button>
+
+                <!-- RESULT -->
+                <div id="resultBox" class="hidden border-t border-slate-800 pt-5">
+                    <div class="flex items-center gap-5">
+                        <div class="relative w-20 h-20 shrink-0">
+                            <svg class="w-20 h-20 -rotate-90">
+                                <circle cx="40" cy="40" r="34" stroke="#1e293b" stroke-width="7" fill="none"/>
+                                <circle id="scoreRing" cx="40" cy="40" r="34" stroke="url(#gradResult)" stroke-width="7" fill="none"
+                                    stroke-dasharray="213.5" stroke-dashoffset="213.5" stroke-linecap="round" class="ring-draw"/>
+                                <defs>
+                                    <linearGradient id="gradResult" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stop-color="#818cf8"/>
+                                        <stop offset="100%" stop-color="#34d399"/>
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                            <div class="absolute inset-0 flex flex-col items-center justify-center">
+                                <span id="scorePercent" class="text-lg font-display font-extrabold text-white">0%</span>
+                            </div>
+                        </div>
+                        <div>
+                            <span id="scoreLevel" class="text-xs font-mono px-2 py-1 rounded-md bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">—</span>
+                            <p class="text-sm text-slate-300 mt-2 leading-relaxed" id="scoreFeedback"></p>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <p class="text-xs font-semibold text-slate-400 mb-2">Skills to strengthen</p>
+                        <div id="missingSkills" class="flex flex-wrap gap-1.5"></div>
+                    </div>
+                    <div class="mt-5 bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-xs rounded-xl px-4 py-3 flex items-center gap-2">
+                        <i class="fa-solid fa-circle-check"></i> Application submitted successfully!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const user = JSON.parse(localStorage.getItem('ch_user') || 'null');
+        if (!user || user.role !== 'candidate') { window.location.href = '/login'; }
+
+        document.getElementById('userName').textContent = user.name;
+        document.getElementById('avatarInitial').textContent = user.name.charAt(0).toUpperCase();
+
+        function logout() { localStorage.removeItem('ch_user'); window.location.href = '/'; }
+
+        function styleNav() {
+            document.querySelectorAll('.nav-btn').forEach(b => {
+                b.classList.remove('bg-indigo-600', 'text-white');
+                b.classList.add('text-slate-400');
+            });
+        }
+
+        function showTab(tab) {
+            document.getElementById('tab-browse').classList.toggle('hidden', tab !== 'browse');
+            document.getElementById('tab-applications').classList.toggle('hidden', tab !== 'applications');
+            styleNav();
+            document.getElementById('nav-' + tab).classList.remove('text-slate-400');
+            document.getElementById('nav-' + tab).classList.add('bg-indigo-600', 'text-white');
+            if (tab === 'applications') loadApplications();
+        }
+
+        let allJobs = [];
+        let appliedJobIds = new Set();
+        let currentJob = null;
+
+        async function loadJobs(search) {
+            const url = search ? `/api/jobs?search=${encodeURIComponent(search)}` : '/api/jobs';
+            const res = await fetch(url);
+            const data = await res.json();
+            allJobs = data.jobs;
+            renderJobs();
+        }
+
+        function renderJobs() {
+            const list = document.getElementById('jobsList');
+            const empty = document.getElementById('jobsEmpty');
+            list.innerHTML = '';
+            if (allJobs.length === 0) { empty.classList.remove('hidden'); return; }
+            empty.classList.add('hidden');
+
+            allJobs.forEach((job, i) => {
+                const applied = appliedJobIds.has(job.id);
+                const card = document.createElement('div');
+                card.className = 'fade-up bg-slate-900/60 border border-slate-800 hover:border-indigo-500/40 rounded-2xl p-6 transition group';
+                card.style.animationDelay = (i * 0.05) + 's';
+                card.innerHTML = `
+                    <div class="flex items-start justify-between mb-3">
+                        <div>
+                            <h3 class="font-display font-bold text-white text-base group-hover:text-indigo-300 transition">${escapeHtml(job.title)}</h3>
+                            <p class="text-xs text-slate-500 mt-0.5">${escapeHtml(job.company_name)} &middot; ${escapeHtml(job.location)}</p>
+                        </div>
+                        <span class="text-xs font-mono px-2 py-1 rounded-md bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 shrink-0">${escapeHtml(job.salary)}</span>
+                    </div>
+                    <div class="flex flex-wrap gap-2 mb-3 text-[11px]">
+                        <span class="px-2 py-1 rounded-md bg-slate-800 text-slate-300"><i class="fa-solid fa-briefcase mr-1"></i>${escapeHtml(job.job_type)}</span>
+                        <span class="px-2 py-1 rounded-md bg-slate-800 text-slate-300"><i class="fa-solid fa-layer-group mr-1"></i>${escapeHtml(job.experience)}</span>
+                    </div>
+                    <p class="text-xs text-slate-400 leading-relaxed line-clamp-2 mb-4">${escapeHtml(job.requirements)}</p>
+                    <button onclick='openApplyModal(${job.id})' ${applied ? 'disabled' : ''}
+                        class="w-full text-sm font-semibold py-2.5 rounded-xl transition ${applied ? 'bg-slate-800 text-slate-500 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-600/20'}">
+                        ${applied ? '<i class="fa-solid fa-check mr-1"></i> Already Applied' : 'Apply with AI Match'}
+                    </button>
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        let searchTimer;
+        function debouncedSearch() {
+            clearTimeout(searchTimer);
+            searchTimer = setTimeout(() => loadJobs(document.getElementById('searchInput').value), 300);
+        }
+
+        function openApplyModal(jobId) {
+            currentJob = allJobs.find(j => j.id === jobId);
+            if (!currentJob) return;
+            document.getElementById('modalTitle').textContent = currentJob.title;
+            document.getElementById('modalCompany').textContent = currentJob.company_name;
+            document.getElementById('modalRequirements').textContent = currentJob.requirements;
+            document.getElementById('modalJobMeta').innerHTML = `
+                <span class="px-2 py-1 rounded-md bg-slate-800 text-slate-300">${escapeHtml(currentJob.salary)}</span>
+                <span class="px-2 py-1 rounded-md bg-slate-800 text-slate-300">${escapeHtml(currentJob.experience)}</span>
+                <span class="px-2 py-1 rounded-md bg-slate-800 text-slate-300">${escapeHtml(currentJob.location)}</span>
+            `;
+            document.getElementById('resumeFile').value = '';
+            document.getElementById('fileLabel').textContent = 'Click to choose a PDF file';
+            document.getElementById('analyzeBtn').disabled = true;
+            document.getElementById('resultBox').classList.add('hidden');
+            document.getElementById('uploadZone').classList.remove('hidden');
+            document.getElementById('applyModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('applyModal').classList.add('hidden');
+            renderJobs();
+        }
+
+        function onFileChosen() {
+            const f = document.getElementById('resumeFile').files[0];
+            document.getElementById('fileLabel').textContent = f ? f.name : 'Click to choose a PDF file';
+            document.getElementById('analyzeBtn').disabled = !f;
+        }
+
+        async function analyzeAndApply() {
+            const file = document.getElementById('resumeFile').files[0];
+            if (!file || !currentJob) return;
+            const btn = document.getElementById('analyzeBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch spin"></i> Analyzing resume...';
+
+            const formData = new FormData();
+            formData.append('job_id', currentJob.id);
+            formData.append('candidate_id', user.id);
+            formData.append('candidate_name', user.name);
+            formData.append('candidate_email', user.email);
+            formData.append('resume', file);
+
+            try {
+                const res = await fetch('/api/apply', { method: 'POST', body: formData });
+                const data = await res.json();
+                if (!res.ok) {
+                    alert(data.detail || 'Something went wrong.');
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> <span>AI Analyze CV &amp; Apply</span>';
+                    return;
+                }
+                showResult(data.analysis);
+                appliedJobIds.add(currentJob.id);
+            } catch (err) {
+                alert('Connection error. Please try again.');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> <span>AI Analyze CV &amp; Apply</span>';
+            }
+        }
+
+        function showResult(analysis) {
+            document.getElementById('uploadZone').classList.add('hidden');
+            document.getElementById('analyzeBtn').classList.add('hidden');
+            const box = document.getElementById('resultBox');
+            box.classList.remove('hidden');
+
+            const pct = analysis.score_percentage;
+            document.getElementById('scorePercent').textContent = pct + '%';
+            document.getElementById('scoreLevel').textContent = analysis.match_score + ' Match';
+            document.getElementById('scoreFeedback').textContent = analysis.feedback;
+
+            const circumference = 213.5;
+            const offset = circumference - (circumference * pct / 100);
+            const ring = document.getElementById('scoreRing');
+            ring.style.strokeDashoffset = circumference;
+            setTimeout(() => { ring.style.strokeDashoffset = offset; }, 50);
+
+            const skillsBox = document.getElementById('missingSkills');
+            skillsBox.innerHTML = '';
+            (analysis.missing_skills || []).forEach(s => {
+                const tag = document.createElement('span');
+                tag.className = 'text-[11px] font-mono px-2 py-1 rounded-md bg-amber-500/10 text-amber-300 border border-amber-500/20';
+                tag.textContent = s;
+                skillsBox.appendChild(tag);
+            });
+        }
+
+        async function loadApplications() {
+            const res = await fetch(`/api/candidate/applications?candidate_id=${user.id}`);
+            const data = await res.json();
+            appliedJobIds = new Set(data.applications.map(a => a.job_id));
+
+            const list = document.getElementById('applicationsList');
+            const empty = document.getElementById('applicationsEmpty');
+            list.innerHTML = '';
+            if (data.applications.length === 0) { empty.classList.remove('hidden'); return; }
+            empty.classList.add('hidden');
+
+            data.applications.forEach((a, i) => {
+                const levelColor = a.match_score === 'High' ? 'emerald' : (a.match_score === 'Medium' ? 'amber' : 'rose');
+                const card = document.createElement('div');
+                card.className = 'fade-up bg-slate-900/60 border border-slate-800 rounded-2xl p-5 flex items-center gap-5';
+                card.style.animationDelay = (i * 0.05) + 's';
+                card.innerHTML = `
+                    <div class="relative w-16 h-16 shrink-0">
+                        <svg class="w-16 h-16 -rotate-90">
+                            <circle cx="32" cy="32" r="27" stroke="#1e293b" stroke-width="6" fill="none"/>
+                            <circle cx="32" cy="32" r="27" stroke="currentColor" class="text-${levelColor}-400" stroke-width="6" fill="none"
+                                stroke-dasharray="169.6" stroke-dashoffset="${169.6 - (169.6 * a.score_percentage / 100)}" stroke-linecap="round"/>
+                        </svg>
+                        <div class="absolute inset-0 flex items-center justify-center text-xs font-display font-bold text-white">${a.score_percentage}%</div>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <h3 class="font-display font-bold text-white text-sm">${escapeHtml(a.job_title)}</h3>
+                            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-${levelColor}-500/10 text-${levelColor}-300 border border-${levelColor}-500/20">${a.match_score}</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-0.5">${escapeHtml(a.company_name)} &middot; ${escapeHtml(a.salary)}</p>
+                        <p class="text-xs text-slate-400 mt-2 leading-relaxed">${escapeHtml(a.feedback)}</p>
+                    </div>
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str ?? '';
+            return div.innerHTML;
+        }
+
+        loadJobs();
+        loadApplications();
+        showTab('browse');
+    </script>
+</body>
+</html>

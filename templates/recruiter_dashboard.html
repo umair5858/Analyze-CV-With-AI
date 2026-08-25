@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Career Hub | Recruiter</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+</head>
+
+
+<body class="bg-slate-950 text-white min-h-screen">
+
+
+<nav class="border-b border-slate-800 bg-slate-950/90">
+
+<div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+
+<a href="/" class="flex items-center gap-3">
+
+<div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-blue-500 flex items-center justify-center font-black">
+CH
+</div>
+
+<span class="font-display font-extrabold text-lg">
+Career Hub
+</span>
+
+</a>
+
+
+<div class="flex items-center gap-4">
+
+<div class="text-right">
+
+<p id="userName" class="text-sm font-semibold">
+Recruiter
+</p>
+
+<p class="text-xs text-slate-500">
+Recruiter workspace
+</p>
+
+</div>
+
+<button onclick="logout()"
+class="w-9 h-9 rounded-xl border border-slate-800 text-slate-400 hover:text-white">
+
+<i class="fa-solid fa-right-from-bracket"></i>
+
+</button>
+
+</div>
+
+</div>
+
+</nav>
+
+
+<main class="max-w-7xl mx-auto px-6 py-10">
+
+
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-5 mb-10">
+
+<div>
+
+<p class="text-indigo-400 text-xs font-bold uppercase tracking-widest">
+Recruiter workspace
+</p>
+
+<h1 class="font-display text-3xl md:text-4xl font-extrabold mt-2">
+Build your talent pipeline.
+</h1>
+
+<p class="text-slate-500 mt-3">
+Post roles, review candidates and find the strongest matches.
+</p>
+
+</div>
+
+
+<button
+onclick="openJobModal()"
+class="px-5 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 font-semibold">
+
+<i class="fa-solid fa-plus mr-2"></i>
+Post a new job
+
+</button>
+
+</div>
+
+
+<div class="grid md:grid-cols-3 gap-5 mb-10">
+
+<div class="p-6 rounded-3xl bg-slate-900 border border-slate-800">
+
+<p class="text-xs text-slate-500 uppercase tracking-widest">
+Active roles
+</p>
+
+<div id="jobCount"
+class="font-display text-4xl font-extrabold mt-3">
+0
+</div>
+
+</div>
+
+
+<div class="p-6 rounded-3xl bg-slate-900 border border-slate-800">
+
+<p class="text-xs text-slate-500 uppercase tracking-widest">
+Applications
+</p>
+
+<div id="applicationCount"
+class="font-display text-4xl font-extrabold mt-3">
+0
+</div>
+
+</div>
+
+
+<div class="p-6 rounded-3xl bg-gradient-to-br from-indigo-600/20 to-slate-900 border border-slate-800">
+
+<p class="text-xs text-slate-500 uppercase tracking-widest">
+Hiring focus
+</p>
+
+<div class="font-display text-xl font-bold mt-4">
+Find the right fit.
+</div>
+
+<p class="text-xs text-slate-500 mt-2">
+Review candidates by match score.
+</p>
+
+</div>
+
+</div>
+
+
+<section>
+
+<div class="flex items-center justify-between mb-5">
+
+<div>
+
+<h2 class="font-display text-2xl font-bold">
+Your job openings
+</h2>
+
+<p class="text-sm text-slate-500 mt-1">
+Manage your active opportunities and applicants.
+</p>
+
+</div>
+
+</div>
+
+
+<div id="jobs"
+class="grid lg:grid-cols-2 gap-5">
+</div>
+
+</section>
+
+
+<section class="mt-12">
+
+<div class="mb-5">
+
+<h2 class="font-display text-2xl font-bold">
+Candidate applications
+</h2>
+
+<p class="text-sm text-slate-500 mt-1">
+Review candidate profiles and AI matching results.
+</p>
+
+</div>
+
+
+<div id="applications"
+class="space-y-4">
+</div>
+
+</section>
+
+
+</main>
+
+
+<!-- JOB MODAL -->
+
+<div id="jobModal"
+class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm items-center justify-center p-5">
+
+<div class="w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-slate-900 border border-slate-800 rounded-3xl p-7">
+
+<div class="flex justify-between items-center">
+
+<h2 class="font-display text-xl font-bold">
+Post a new opportunity
+</h2>
+
+<button onclick="closeJobModal()"
+class="text-slate-500 hover:text-white">
+
+<i class="fa-solid fa-xmark"></i>
+
+</button>
+
+</div>
+
+
+<form onsubmit="createJob(event)" class="grid md:grid-cols-2 gap-4 mt-6">
+
+
+<input id="title"
+required
+placeholder="Job title"
+class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm outline-none focus:border-indigo-500">
+
+
+<input id="company"
+required
+placeholder="Company name"
+class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm outline-none focus:border-indigo-500">
+
+
+<input id="salary"
+required
+placeholder="Salary e.g. $60k - $80k"
+class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm outline-none focus:border-indigo-500">
+
+
+<input id="experience"
+required
+placeholder="Experience e.g. 2-4 years"
+class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm outline-none focus:border-indigo-500">
+
+
+<input id="location"
+value="Remote"
+placeholder="Location"
+class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm outline-none focus:border-indigo-500">
+
+
+<select id="jobType"
+class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm outline-none">
+
+<option>Full-time</option>
+<option>Part-time</option>
+<option>Contract</option>
+<option>Internship</option>
+
+</select>
+
+
+<textarea
+id="description"
+rows="4"
+placeholder="Job description"
+class="md:col-span-2 bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm outline-none focus:border-indigo-500"></textarea>
+
+
+<textarea
+id="requirements"
+required
+rows="4"
+placeholder="Required skills, separated by commas"
+class="md:col-span-2 bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm outline-none focus:border-indigo-500"></textarea>
+
+
+<button
+class="md:col-span-2 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 font-semibold">
+
+Publish opportunity
+
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+
+<script>
+
+const user =
+JSON.parse(localStorage.getItem("ch_user") || "null");
+
+
+if (!user || user.role !== "recruiter") {
+
+window.location.href = "/login";
+
+}
+
+
+document.getElementById("userName").textContent =
+user.name;
+
+
+function openJobModal() {
+
+const modal =
+document.getElementById("jobModal");
+
+modal.classList.remove("hidden");
+modal.classList.add("flex");
+
+}
+
+
+function closeJobModal() {
+
+const modal =
+document.getElementById("jobModal");
+
+modal.classList.add("hidden");
+modal.classList.remove("flex");
+
+}
+
+
+async function createJob(event) {
+
+event.preventDefault();
+
+
+const formData = new FormData();
+
+formData.append(
+"title",
+document.getElementById("title").value
+);
+
+formData.append(
+"company_name",
+document.getElementById("company").value
+);
+
+formData.append(
+"salary",
+document.getElementById("salary").value
+);
+
+formData.append(
+"experience",
+document.getElementById("experience").value
+);
+
+formData.append(
+"job_type",
+document.getElementById("jobType").value
+);
+
+formData.append(
+"location",
+document.getElementById("location").value
+);
+
+formData.append(
+"description",
+document.getElementById("description").value
+);
+
+formData.append(
+"requirements",
+document.getElementById("requirements").value
+);
+
+formData.append(
+"posted_by",
+user.id
+);
+
+
+const response =
+await fetch(
+"/api/jobs",
+{
+method: "POST",
+body: formData
+}
+);
+
+
+const data =
+await response.json();
+
+
+if (!response.ok) {
+
+alert(data.detail || "Could not create job.");
+
+return;
+
+}
+
+
+closeJobModal();
+
+event.target.reset();
+
+loadJobs();
+
+alert("Job published successfully.");
+
+}
+
+
+async function loadJobs() {
+
+const response =
+await fetch(
+`/api/recruiter/jobs?recruiter_id=${user.id}`
+);
+
+const data =
+await response.json();
+
+
+document.getElementById("jobCount").textContent =
+data.jobs.length;
+
+
+let totalApplications = 0;
+
+
+data.jobs.forEach(
+job => totalApplications += job.applicant_count
+);
+
+
+document.getElementById("applicationCount").textContent =
+totalApplications;
+
+
+const container =
+document.getElementById("jobs");
+
+
+if (!data.jobs.length) {
+
+container.innerHTML = `
+<div class="lg:col-span-2 p-10 text-center border border-dashed border-slate-800 rounded-3xl">
+<i class="fa-solid fa-briefcase text-slate-700 text-2xl"></i>
+<p class="text-slate-500 mt-3">
+You haven't posted any jobs yet.
+</p>
+</div>
+`;
+
+return;
+
+}
+
+
+container.innerHTML =
+data.jobs.map(job => `
+
+<div class="p-6 rounded-3xl bg-slate-900 border border-slate-800">
+
+<div class="flex justify-between gap-5">
+
+<div>
+
+<h3 class="font-display text-xl font-bold">
+${escapeHtml(job.title)}
+</h3>
+
+<p class="text-indigo-400 text-sm mt-1">
+${escapeHtml(job.company_name)}
+</p>
+
+</div>
+
+<div class="text-right">
+
+<div class="text-2xl font-display font-extrabold">
+${job.applicant_count}
+</div>
+
+<p class="text-[10px] text-slate-600 uppercase">
+Applicants
+</p>
+
+</div>
+
+</div>
+
+
+<div class="flex flex-wrap gap-4 text-xs text-slate-500 mt-5">
+
+<span>
+<i class="fa-solid fa-location-dot mr-1"></i>
+${escapeHtml(job.location)}
+</span>
+
+<span>
+<i class="fa-solid fa-money-bill mr-1"></i>
+${escapeHtml(job.salary)}
+</span>
+
+<span>
+<i class="fa-solid fa-clock mr-1"></i>
+${escapeHtml(job.job_type)}
+</span>
+
+</div>
+
+
+<div class="flex gap-3 mt-6">
+
+<button
+onclick="loadApplicants(${job.id}, '${escapeJs(job.title)}')"
+class="flex-1 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-sm font-semibold">
+
+View applicants
+
+</button>
+
+
+<button
+onclick="deleteJob(${job.id})"
+class="px-4 rounded-xl border border-slate-800 text-slate-500 hover:text-rose-400">
+
+<i class="fa-solid fa-trash"></i>
+
+</button>
+
+</div>
+
+</div>
+
+`).join("");
+
+}
+
+
+async function loadApplicants(jobId, jobTitle) {
+
+const response =
+await fetch(
+`/api/recruiter/applications/${jobId}`
+);
+
+const data =
+await response.json();
+
+
+const container =
+document.getElementById("applications");
+
+
+if (!data.applications.length) {
+
+container.innerHTML = `
+<div class="p-8 rounded-3xl border border-dashed border-slate-800 text-center">
+<p class="text-slate-500 text-sm">
+No applications for ${escapeHtml(jobTitle)} yet.
+</p>
+</div>
+`;
+
+return;
+
+}
+
+
+container.innerHTML = `
+
+<div class="mb-5 flex items-center justify-between">
+
+<div>
+
+<p class="text-xs text-indigo-400 uppercase tracking-widest">
+Selected role
+</p>
+
+<h3 class="font-display text-xl font-bold mt-1">
+${escapeHtml(jobTitle)}
+</h3>
+
+</div>
+
+</div>
+
+` + data.applications.map(app => `
+
+<div class="p-6 rounded-3xl bg-slate-900 border border-slate-800">
+
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-5">
+
+<div>
+
+<h3 class="font-display text-lg font-bold">
+${escapeHtml(app.candidate_name)}
+</h3>
+
+<p class="text-sm text-indigo-400 mt-1">
+${escapeHtml(app.candidate_email)}
+</p>
+
+</div>
+
+
+<div class="text-left md:text-right">
+
+<div class="text-3xl font-display font-extrabold text-indigo-400">
+${app.score_percentage}%
+</div>
+
+<p class="text-xs text-slate-600 uppercase">
+AI match score
+</p>
+
+</div>
+
+</div>
+
+
+<div class="mt-5 p-4 rounded-2xl bg-slate-950 border border-slate-800">
+
+<p class="text-xs text-slate-500 uppercase tracking-wider">
+Candidate evaluation
+</p>
+
+<p class="text-sm text-slate-400 leading-6 mt-2">
+${escapeHtml(app.feedback)}
+</p>
+
+</div>
+
+
+<div class="mt-4">
+
+<p class="text-xs text-slate-500 mb-2">
+Potential skill gaps
+</p>
+
+<div class="flex flex-wrap gap-2">
+
+${
+app.missing_skills.length
+?
+app.missing_skills.map(skill => `
+<span class="px-3 py-1.5 rounded-lg bg-rose-500/10 text-rose-300 text-xs">
+${escapeHtml(skill)}
+</span>
+`).join("")
+:
+`<span class="text-xs text-emerald-400">
+No major gaps identified
+</span>`
+}
+
+</div>
+
+</div>
+
+
+<div class="mt-5">
+
+<details>
+
+<summary class="cursor-pointer text-sm text-indigo-400 font-semibold">
+View extracted CV text
+</summary>
+
+<div class="mt-3 p-4 rounded-xl bg-slate-950 border border-slate-800 max-h-64 overflow-y-auto">
+
+<p class="text-xs text-slate-500 whitespace-pre-wrap leading-6">
+${escapeHtml(app.resume_text || "No CV text available.")}
+</p>
+
+</div>
+
+</details>
+
+</div>
+
+</div>
+
+`).join("");
+
+}
+
+
+async function deleteJob(id) {
+
+if (!confirm("Delete this job and its applications?")) {
+return;
+}
+
+
+const response =
+await fetch(
+`/api/jobs/${id}?recruiter_id=${user.id}`,
+{
+method: "DELETE"
+}
+);
+
+
+const data =
+await response.json();
+
+
+if (!response.ok) {
+
+alert(data.detail || "Could not delete job.");
+
+return;
+
+}
+
+
+loadJobs();
+
+document.getElementById("applications").innerHTML = "";
+
+}
+
+
+function logout() {
+
+localStorage.removeItem("ch_user");
+
+window.location.href = "/login";
+
+}
+
+
+function escapeHtml(value) {
+
+return String(value || "")
+.replaceAll("&", "&amp;")
+.replaceAll("<", "&lt;")
+.replaceAll(">", "&gt;")
+.replaceAll('"', "&quot;")
+.replaceAll("'", "&#039;");
+
+}
+
+
+function escapeJs(value) {
+
+return String(value || "")
+.replaceAll("\\", "\\\\")
+.replaceAll("'", "\\'")
+.replaceAll("\n", " ");
+
+}
+
+
+loadJobs();
+
+</script>
+
+</body>
+</html>

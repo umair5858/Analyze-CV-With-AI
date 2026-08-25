@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Career Hub | Candidate</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+</head>
+
+
+<body class="bg-slate-950 text-white min-h-screen">
+
+
+<nav class="border-b border-slate-800 bg-slate-950/90">
+
+<div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+
+<a href="/" class="flex items-center gap-3">
+
+<div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-blue-500 flex items-center justify-center font-black">
+CH
+</div>
+
+<span class="font-display font-extrabold text-lg">
+Career Hub
+</span>
+
+</a>
+
+
+<div class="flex items-center gap-4">
+
+<div class="text-right">
+
+<p id="userName" class="text-sm font-semibold">
+Candidate
+</p>
+
+<p class="text-xs text-slate-500">
+Candidate account
+</p>
+
+</div>
+
+<button onclick="logout()"
+class="w-9 h-9 rounded-xl border border-slate-800 text-slate-400 hover:text-white">
+
+<i class="fa-solid fa-right-from-bracket"></i>
+
+</button>
+
+</div>
+
+</div>
+
+</nav>
+
+
+<main class="max-w-7xl mx-auto px-6 py-10">
+
+
+<div class="mb-10">
+
+<p class="text-indigo-400 text-xs font-bold uppercase tracking-widest">
+Candidate workspace
+</p>
+
+<h1 class="font-display text-3xl md:text-4xl font-extrabold mt-2">
+Find your next opportunity.
+</h1>
+
+<p class="text-slate-500 mt-3">
+Explore jobs, apply with your CV and track your applications.
+</p>
+
+</div>
+
+
+<div class="grid lg:grid-cols-3 gap-6 mb-10">
+
+<div class="lg:col-span-2 p-6 rounded-3xl border border-slate-800 bg-slate-900">
+
+<div class="flex items-center justify-between mb-5">
+
+<div>
+
+<h2 class="font-display text-xl font-bold">
+Explore opportunities
+</h2>
+
+<p class="text-sm text-slate-500 mt-1">
+Find roles that match your skills.
+</p>
+
+</div>
+
+<i class="fa-solid fa-briefcase text-indigo-400 text-xl"></i>
+
+</div>
+
+
+<input
+id="search"
+oninput="loadJobs()"
+placeholder="Search jobs, companies or skills..."
+class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm outline-none focus:border-indigo-500">
+
+
+<div id="jobs"
+class="mt-5 space-y-4">
+</div>
+
+</div>
+
+
+<div class="p-6 rounded-3xl border border-slate-800 bg-gradient-to-br from-indigo-600/20 to-slate-900">
+
+<div class="w-12 h-12 rounded-2xl bg-indigo-500/20 text-indigo-300 flex items-center justify-center">
+<i class="fa-solid fa-chart-simple"></i>
+</div>
+
+<h2 class="font-display text-xl font-bold mt-6">
+Your applications
+</h2>
+
+<p class="text-sm text-slate-500 mt-2">
+Keep track of your job applications and AI match results.
+</p>
+
+<div class="mt-7">
+
+<div class="text-4xl font-display font-extrabold" id="applicationCount">
+0
+</div>
+
+<p class="text-xs text-slate-500 mt-1">
+Applications submitted
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+<section>
+
+<div class="flex justify-between items-center mb-5">
+
+<div>
+
+<h2 class="font-display text-2xl font-bold">
+Application activity
+</h2>
+
+<p class="text-sm text-slate-500 mt-1">
+Your latest applications and match results.
+</p>
+
+</div>
+
+</div>
+
+
+<div id="applications"
+class="grid md:grid-cols-2 gap-4">
+</div>
+
+</section>
+
+
+</main>
+
+
+<!-- APPLY MODAL -->
+
+<div id="applyModal"
+class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm items-center justify-center p-5 z-50">
+
+<div class="w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl p-7">
+
+<button onclick="closeModal()"
+class="float-right text-slate-500 hover:text-white">
+
+<i class="fa-solid fa-xmark"></i>
+
+</button>
+
+<h2 class="font-display text-xl font-bold">
+Apply for this role
+</h2>
+
+<p id="selectedJob"
+class="text-sm text-slate-500 mt-2">
+</p>
+
+
+<div class="mt-6">
+
+<label class="text-xs text-slate-400 block mb-2">
+Upload your CV
+</label>
+
+<input
+id="resume"
+type="file"
+accept=".pdf"
+class="w-full text-sm text-slate-400 bg-slate-950 border border-slate-800 rounded-xl p-3">
+
+<p class="text-xs text-slate-600 mt-2">
+PDF format only.
+</p>
+
+</div>
+
+
+<button
+onclick="submitApplication()"
+class="w-full mt-6 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 font-semibold">
+
+Submit application
+
+</button>
+
+
+<div id="applyError"
+class="hidden mt-4 text-sm text-rose-400">
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+const user =
+JSON.parse(localStorage.getItem("ch_user") || "null");
+
+
+if (!user || user.role !== "candidate") {
+
+window.location.href = "/login";
+
+}
+
+
+document.getElementById("userName").textContent =
+user.name;
+
+
+let selectedJobId = null;
+
+
+async function loadJobs() {
+
+const search =
+document.getElementById("search").value.trim();
+
+
+const url =
+search
+? `/api/jobs?search=${encodeURIComponent(search)}`
+: "/api/jobs";
+
+
+const response = await fetch(url);
+
+const data = await response.json();
+
+
+const container =
+document.getElementById("jobs");
+
+
+if (!data.jobs.length) {
+
+container.innerHTML = `
+<div class="p-8 text-center border border-dashed border-slate-800 rounded-2xl">
+<i class="fa-solid fa-magnifying-glass text-slate-700 text-2xl"></i>
+<p class="text-sm text-slate-500 mt-3">
+No opportunities found.
+</p>
+</div>
+`;
+
+return;
+
+}
+
+
+container.innerHTML =
+data.jobs.map(job => `
+
+<div class="p-5 rounded-2xl border border-slate-800 bg-slate-950/60">
+
+<div class="flex justify-between gap-4">
+
+<div>
+
+<h3 class="font-display font-bold text-lg">
+${escapeHtml(job.title)}
+</h3>
+
+<p class="text-sm text-indigo-400 mt-1">
+${escapeHtml(job.company_name)}
+</p>
+
+</div>
+
+<span class="text-xs px-3 py-1.5 rounded-full bg-indigo-500/10 text-indigo-300 h-fit">
+${escapeHtml(job.job_type)}
+</span>
+
+</div>
+
+
+<div class="flex flex-wrap gap-4 text-xs text-slate-500 mt-4">
+
+<span>
+<i class="fa-solid fa-location-dot mr-1"></i>
+${escapeHtml(job.location)}
+</span>
+
+<span>
+<i class="fa-solid fa-money-bill mr-1"></i>
+${escapeHtml(job.salary)}
+</span>
+
+<span>
+<i class="fa-solid fa-user-clock mr-1"></i>
+${escapeHtml(job.experience)}
+</span>
+
+</div>
+
+
+<p class="text-sm text-slate-500 mt-4 line-clamp-2">
+${escapeHtml(job.description || job.requirements)}
+</p>
+
+
+<button
+onclick="openApply(${job.id}, '${escapeJs(job.title)}')"
+class="mt-5 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-sm font-semibold">
+
+Apply now
+<i class="fa-solid fa-arrow-right ml-2 text-xs"></i>
+
+</button>
+
+</div>
+
+`).join("");
+
+}
+
+
+function openApply(id, title) {
+
+selectedJobId = id;
+
+document.getElementById("selectedJob").textContent =
+title;
+
+document.getElementById("applyModal").classList.remove("hidden");
+document.getElementById("applyModal").classList.add("flex");
+
+}
+
+
+function closeModal() {
+
+document.getElementById("applyModal").classList.add("hidden");
+document.getElementById("applyModal").classList.remove("flex");
+
+}
+
+
+async function submitApplication() {
+
+const file =
+document.getElementById("resume").files[0];
+
+const error =
+document.getElementById("applyError");
+
+
+if (!file) {
+
+error.textContent = "Please select your CV.";
+error.classList.remove("hidden");
+
+return;
+
+}
+
+
+const formData = new FormData();
+
+formData.append("job_id", selectedJobId);
+formData.append("candidate_id", user.id);
+formData.append("candidate_name", user.name);
+formData.append("candidate_email", user.email);
+formData.append("resume", file);
+
+
+const response =
+await fetch(
+"/api/apply",
+{
+method: "POST",
+body: formData
+}
+);
+
+
+const data = await response.json();
+
+
+if (!response.ok) {
+
+error.textContent =
+data.detail || "Application failed.";
+
+error.classList.remove("hidden");
+
+return;
+
+}
+
+
+alert(
+`Application submitted!\n\nAI Match: ${data.analysis.score_percentage}%`
+);
+
+closeModal();
+
+document.getElementById("resume").value = "";
+
+loadApplications();
+
+}
+
+
+async function loadApplications() {
+
+const response =
+await fetch(
+`/api/candidate/applications?candidate_id=${user.id}`
+);
+
+const data =
+await response.json();
+
+
+document.getElementById("applicationCount").textContent =
+data.applications.length;
+
+
+const container =
+document.getElementById("applications");
+
+
+if (!data.applications.length) {
+
+container.innerHTML = `
+<div class="md:col-span-2 p-10 text-center rounded-3xl border border-dashed border-slate-800">
+<p class="text-slate-500 text-sm">
+You haven't submitted any applications yet.
+</p>
+</div>
+`;
+
+return;
+
+}
+
+
+container.innerHTML =
+data.applications.map(app => `
+
+<div class="p-5 rounded-2xl bg-slate-900 border border-slate-800">
+
+<div class="flex justify-between gap-4">
+
+<div>
+
+<h3 class="font-semibold">
+${escapeHtml(app.job_title)}
+</h3>
+
+<p class="text-sm text-indigo-400 mt-1">
+${escapeHtml(app.company_name)}
+</p>
+
+</div>
+
+<div class="text-right">
+
+<div class="text-2xl font-display font-extrabold text-indigo-400">
+${app.score_percentage}%
+</div>
+
+<p class="text-[10px] text-slate-600 uppercase">
+AI match
+</p>
+
+</div>
+
+</div>
+
+
+<p class="text-sm text-slate-500 mt-4">
+${escapeHtml(app.feedback)}
+</p>
+
+
+<div class="mt-4 flex flex-wrap gap-2">
+
+${app.missing_skills.map(skill => `
+<span class="px-2.5 py-1 rounded-lg bg-rose-500/10 text-rose-300 text-xs">
+${escapeHtml(skill)}
+</span>
+`).join("")}
+
+</div>
+
+</div>
+
+`).join("");
+
+}
+
+
+function logout() {
+
+localStorage.removeItem("ch_user");
+
+window.location.href = "/login";
+
+}
+
+
+function escapeHtml(value) {
+
+return String(value || "")
+.replaceAll("&", "&amp;")
+.replaceAll("<", "&lt;")
+.replaceAll(">", "&gt;")
+.replaceAll('"', "&quot;")
+.replaceAll("'", "&#039;");
+
+}
+
+
+function escapeJs(value) {
+
+return String(value || "")
+.replaceAll("\\", "\\\\")
+.replaceAll("'", "\\'")
+.replaceAll("\n", " ");
+
+}
+
+
+loadJobs();
+loadApplications();
+
+</script>
+
+</body>
+</html>

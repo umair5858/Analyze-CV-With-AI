@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Career Hub | Create Account</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+</head>
+
+<body class="bg-slate-950 text-white min-h-screen flex items-center justify-center p-5">
+
+<div class="w-full max-w-md">
+
+    <a href="/" class="flex justify-center items-center gap-3 mb-8">
+
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-blue-500 flex items-center justify-center font-black">
+            CH
+        </div>
+
+        <span class="font-display font-extrabold text-xl">
+            Career Hub
+        </span>
+
+    </a>
+
+
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-2xl">
+
+        <div class="text-center mb-7">
+
+            <h1 class="font-display text-2xl font-extrabold">
+                Create your account
+            </h1>
+
+            <p class="text-sm text-slate-500 mt-2">
+                Choose how you want to use Career Hub.
+            </p>
+
+        </div>
+
+
+        <div id="errorBox"
+             class="hidden mb-5 p-4 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-300 text-sm">
+        </div>
+
+
+        <!-- ROLE -->
+
+        <div class="grid grid-cols-2 gap-2 bg-slate-950 p-1.5 rounded-2xl border border-slate-800 mb-6">
+
+            <button
+                type="button"
+                id="candidateBtn"
+                onclick="selectRole('candidate')"
+                class="py-3 rounded-xl text-sm font-semibold bg-indigo-600 text-white">
+
+                <i class="fa-solid fa-user mr-2"></i>
+                Candidate
+
+            </button>
+
+
+            <button
+                type="button"
+                id="recruiterBtn"
+                onclick="selectRole('recruiter')"
+                class="py-3 rounded-xl text-sm font-semibold text-slate-500">
+
+                <i class="fa-solid fa-briefcase mr-2"></i>
+                Recruiter
+
+            </button>
+
+        </div>
+
+
+        <form id="signupForm" onsubmit="handleSignup(event)" class="space-y-4">
+
+            <input
+                type="hidden"
+                id="role"
+                value="candidate">
+
+
+            <div>
+
+                <label class="text-xs text-slate-400 block mb-2">
+                    Full name
+                </label>
+
+                <input
+                    id="name"
+                    required
+                    type="text"
+                    placeholder="Your full name"
+                    class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-indigo-500">
+
+            </div>
+
+
+            <div>
+
+                <label class="text-xs text-slate-400 block mb-2">
+                    Email address
+                </label>
+
+                <input
+                    id="email"
+                    required
+                    type="email"
+                    placeholder="name@example.com"
+                    class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-indigo-500">
+
+            </div>
+
+
+            <div>
+
+                <label class="text-xs text-slate-400 block mb-2">
+                    Password
+                </label>
+
+                <input
+                    id="password"
+                    required
+                    minlength="4"
+                    type="password"
+                    placeholder="Minimum 4 characters"
+                    class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-indigo-500">
+
+            </div>
+
+
+            <button
+                id="submitBtn"
+                type="submit"
+                class="w-full py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 font-semibold transition">
+
+                Create account
+
+                <i class="fa-solid fa-arrow-right ml-2 text-xs"></i>
+
+            </button>
+
+        </form>
+
+
+        <div class="text-center text-sm text-slate-500 mt-6">
+
+            Already have an account?
+
+            <a href="/login"
+               class="text-indigo-400 font-semibold hover:underline">
+                Log in
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+let selectedRole = "candidate";
+
+
+function selectRole(role) {
+
+    selectedRole = role;
+
+    document.getElementById("role").value = role;
+
+    const candidate = document.getElementById("candidateBtn");
+    const recruiter = document.getElementById("recruiterBtn");
+
+    const active =
+        "py-3 rounded-xl text-sm font-semibold bg-indigo-600 text-white";
+
+    const inactive =
+        "py-3 rounded-xl text-sm font-semibold text-slate-500 hover:text-white";
+
+    if (role === "candidate") {
+
+        candidate.className = active;
+        recruiter.className = inactive;
+
+    } else {
+
+        recruiter.className = active;
+        candidate.className = inactive;
+
+    }
+}
+
+
+async function handleSignup(event) {
+
+    event.preventDefault();
+
+    const btn = document.getElementById("submitBtn");
+    const errorBox = document.getElementById("errorBox");
+
+    errorBox.classList.add("hidden");
+
+    btn.disabled = true;
+    btn.innerHTML =
+        '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Creating account...';
+
+
+    const formData = new FormData();
+
+    formData.append(
+        "name",
+        document.getElementById("name").value.trim()
+    );
+
+    formData.append(
+        "email",
+        document.getElementById("email").value.trim()
+    );
+
+    formData.append(
+        "password",
+        document.getElementById("password").value
+    );
+
+    formData.append(
+        "role",
+        selectedRole
+    );
+
+
+    try {
+
+        const response = await fetch(
+            "/api/signup",
+            {
+                method: "POST",
+                body: formData
+            }
+        );
+
+
+        const data = await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.detail || "Could not create account."
+            );
+
+        }
+
+
+        /*
+         * IMPORTANT:
+         * Signup ke baad direct dashboard nahi.
+         * Pehle login page.
+         */
+
+        window.location.href = "/login";
+
+    } catch (error) {
+
+        errorBox.textContent = error.message;
+        errorBox.classList.remove("hidden");
+
+        btn.disabled = false;
+
+        btn.innerHTML =
+            'Create account <i class="fa-solid fa-arrow-right ml-2 text-xs"></i>';
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
