@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -15,204 +13,133 @@
 
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
 </head>
 
-
 <body class="bg-slate-950 text-white min-h-screen flex items-center justify-center p-5">
-
 
 <div class="w-full max-w-md">
 
     <a href="/" class="flex justify-center items-center gap-3 mb-8">
-
         <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-blue-500 flex items-center justify-center font-black">
             CH
         </div>
-
         <span class="font-display font-extrabold text-xl">
             Career Hub
         </span>
-
     </a>
-
 
     <div class="bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-2xl">
 
         <div class="text-center mb-7">
-
             <h1 class="font-display text-2xl font-extrabold">
                 Welcome back
             </h1>
-
             <p class="text-sm text-slate-500 mt-2">
                 Sign in to continue to your Career Hub account.
             </p>
-
         </div>
-
 
         <div id="errorBox"
              class="hidden mb-5 p-4 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-300 text-sm">
         </div>
 
-
         <form onsubmit="handleLogin(event)" class="space-y-4">
 
-
             <div>
-
                 <label class="text-xs text-slate-400 block mb-2">
                     Email address
                 </label>
-
                 <input
                     id="email"
                     type="email"
                     required
                     placeholder="name@example.com"
                     class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-indigo-500">
-
             </div>
 
-
             <div>
-
                 <label class="text-xs text-slate-400 block mb-2">
                     Password
                 </label>
-
                 <input
                     id="password"
                     type="password"
                     required
                     placeholder="Your password"
                     class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-indigo-500">
-
             </div>
-
 
             <button
                 id="submitBtn"
                 type="submit"
                 class="w-full py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 font-semibold transition">
-
                 Sign in
-
                 <i class="fa-solid fa-arrow-right ml-2 text-xs"></i>
-
             </button>
 
         </form>
 
-
         <div class="text-center text-sm text-slate-500 mt-6">
-
             Don't have an account?
-
             <a href="/signup"
                class="text-indigo-400 font-semibold hover:underline">
                 Create one
             </a>
-
         </div>
 
     </div>
 
 </div>
 
-
 <script>
-
 async function handleLogin(event) {
-
     event.preventDefault();
 
     const btn = document.getElementById("submitBtn");
     const errorBox = document.getElementById("errorBox");
 
     errorBox.classList.add("hidden");
-
     btn.disabled = true;
-
-    btn.innerHTML =
-        '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Signing in...';
-
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Signing in...';
 
     const formData = new FormData();
-
-    formData.append(
-        "email",
-        document.getElementById("email").value.trim()
-    );
-
-    formData.append(
-        "password",
-        document.getElementById("password").value
-    );
-
+    formData.append("email", document.getElementById("email").value.trim());
+    formData.append("password", document.getElementById("password").value);
 
     try {
-
-        const response = await fetch(
-            "/api/login",
-            {
-                method: "POST",
-                body: formData
-            }
-        );
-
+        const response = await fetch("/api/login", {
+            method: "POST",
+            body: formData
+        });
 
         const data = await response.json();
 
-
         if (!response.ok) {
-
-            throw new Error(
-                data.detail || "Invalid email or password."
-            );
-
+            throw new Error(data.detail || "Invalid email or password.");
         }
 
+        // User data ko localStorage mein save karein
+        if (data.user) {
+            localStorage.setItem("ch_user", JSON.stringify(data.user));
+            localStorage.setItem("user", JSON.stringify(data.user));
+        }
 
-        /*
-         * Database mein saved role use hoga.
-         */
-
-        localStorage.setItem(
-            "ch_user",
-            JSON.stringify(data.user)
-        );
-
-
-        if (data.user.role === "recruiter") {
-
-            window.location.href =
-                "/recruiter/dashboard";
-
+        // Redirection handling (Backend redirect_url priority)
+        if (data.redirect_url) {
+            window.location.href = data.redirect_url;
+        } else if (data.user && data.user.role === "recruiter") {
+            window.location.href = "/recruiter/dashboard";
         } else {
-
-            window.location.href =
-                "/candidate/dashboard";
-
+            window.location.href = "/candidate/dashboard";
         }
-
 
     } catch (error) {
-
         errorBox.textContent = error.message;
-
         errorBox.classList.remove("hidden");
-
         btn.disabled = false;
-
-        btn.innerHTML =
-            'Sign in <i class="fa-solid fa-arrow-right ml-2 text-xs"></i>';
-
+        btn.innerHTML = 'Sign in <i class="fa-solid fa-arrow-right ml-2 text-xs"></i>';
     }
-
 }
-
 </script>
 
 </body>
