@@ -4,252 +4,997 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Career Hub | Build What's Next</title>
+    <title>Career Hub | Build Your Career With Confidence</title>
 
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta
+        name="description"
+        content="Career Hub helps candidates discover opportunities, improve resumes with AI, and connect with recruiters."
+    >
 
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f8fafc;
+            color: #0f172a;
+            line-height: 1.6;
         }
 
-        .font-display {
-            font-family: 'Manrope', sans-serif;
+        a {
+            text-decoration: none;
         }
 
-        .grid-bg {
-            background-image:
-                linear-gradient(rgba(148,163,184,.06) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(148,163,184,.06) 1px, transparent 1px);
-            background-size: 42px 42px;
+        /* ================= HEADER ================= */
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+
+            background: rgba(255, 255, 255, 0.96);
+            border-bottom: 1px solid #e2e8f0;
         }
 
-        .glow {
-            box-shadow: 0 0 80px rgba(79,70,229,.18);
+        nav {
+            width: min(1180px, 92%);
+            min-height: 76px;
+            margin: auto;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+        }
+
+        .logo {
+            color: #0f172a;
+            font-size: 23px;
+            font-weight: 800;
+            letter-spacing: -0.7px;
+        }
+
+        .logo span {
+            color: #2563eb;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: #475569;
+            font-size: 15px;
+            font-weight: 600;
+            transition: 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #2563eb;
+        }
+
+        .nav-button {
+            background: #2563eb;
+            color: white;
+
+            padding: 11px 19px;
+            border-radius: 10px;
+
+            font-size: 14px;
+            font-weight: 700;
+
+            transition: 0.2s ease;
+        }
+
+        .nav-button:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        /* ================= HERO ================= */
+
+        .hero {
+            position: relative;
+            overflow: hidden;
+
+            padding: 95px 20px 85px;
+
+            background:
+                radial-gradient(
+                    circle at 10% 10%,
+                    rgba(37, 99, 235, 0.12),
+                    transparent 35%
+                ),
+                radial-gradient(
+                    circle at 90% 30%,
+                    rgba(124, 58, 237, 0.10),
+                    transparent 35%
+                );
+        }
+
+        .hero-container {
+            width: min(1150px, 92%);
+            margin: auto;
+
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            align-items: center;
+            gap: 60px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            padding: 8px 14px;
+
+            background: #eff6ff;
+            border: 1px solid #dbeafe;
+            border-radius: 999px;
+
+            color: #2563eb;
+
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #2563eb;
+        }
+
+        .hero h1 {
+            margin-top: 20px;
+
+            font-size: clamp(42px, 6vw, 68px);
+            line-height: 1.05;
+
+            letter-spacing: -3px;
+        }
+
+        .hero h1 span {
+            color: #2563eb;
+        }
+
+        .hero-description {
+            max-width: 650px;
+
+            margin-top: 22px;
+
+            color: #64748b;
+
+            font-size: 17px;
+            line-height: 1.8;
+        }
+
+        .hero-buttons {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+
+            margin-top: 30px;
+        }
+
+        .primary-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #2563eb;
+            color: white;
+
+            padding: 14px 23px;
+            border-radius: 11px;
+
+            font-size: 14px;
+            font-weight: 800;
+
+            transition: 0.2s ease;
+        }
+
+        .primary-button:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .secondary-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            background: white;
+            color: #334155;
+
+            border: 1px solid #cbd5e1;
+
+            padding: 13px 22px;
+            border-radius: 11px;
+
+            font-size: 14px;
+            font-weight: 700;
+
+            transition: 0.2s ease;
+        }
+
+        .secondary-button:hover {
+            border-color: #2563eb;
+            color: #2563eb;
+        }
+
+        /* ================= HERO VISUAL ================= */
+
+        .hero-visual {
+            position: relative;
+            min-height: 390px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dashboard-card {
+            width: min(430px, 100%);
+
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 24px;
+
+            padding: 25px;
+
+            box-shadow:
+                0 30px 70px rgba(15, 23, 42, 0.12);
+
+            transform: rotate(1deg);
+        }
+
+        .dashboard-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 24px;
+        }
+
+        .dashboard-title {
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .status {
+            padding: 6px 10px;
+
+            background: #ecfdf5;
+            color: #059669;
+
+            border-radius: 999px;
+
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .score-box {
+            padding: 22px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eff6ff,
+                    #f5f3ff
+                );
+
+            border-radius: 18px;
+
+            margin-bottom: 17px;
+        }
+
+        .score-label {
+            color: #64748b;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .score {
+            margin-top: 4px;
+
+            font-size: 46px;
+            font-weight: 900;
+            color: #2563eb;
+        }
+
+        .score span {
+            font-size: 20px;
+            color: #64748b;
+        }
+
+        .progress {
+            height: 8px;
+
+            background: #dbeafe;
+            border-radius: 99px;
+
+            overflow: hidden;
+            margin-top: 12px;
+        }
+
+        .progress-fill {
+            width: 87%;
+            height: 100%;
+            background: #2563eb;
+            border-radius: 99px;
+        }
+
+        .mini-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            padding: 14px 0;
+
+            border-bottom: 1px solid #f1f5f9;
+
+            font-size: 13px;
+        }
+
+        .mini-row:last-child {
+            border-bottom: none;
+        }
+
+        .mini-name {
+            color: #475569;
+            font-weight: 600;
+        }
+
+        .mini-value {
+            color: #059669;
+            font-weight: 800;
+        }
+
+        /* ================= TRUST STRIP ================= */
+
+        .trust-strip {
+            background: #0f172a;
+            color: white;
+
+            padding: 27px 20px;
+        }
+
+        .trust-container {
+            width: min(1050px, 92%);
+            margin: auto;
+
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+
+            text-align: center;
+        }
+
+        .trust-item strong {
+            display: block;
+            font-size: 19px;
+        }
+
+        .trust-item span {
+            display: block;
+
+            margin-top: 3px;
+
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        /* ================= GENERAL SECTION ================= */
+
+        .section {
+            width: min(1150px, 92%);
+            margin: auto;
+
+            padding: 95px 0;
+        }
+
+        .section-header {
+            max-width: 680px;
+            margin: 0 auto 45px;
+
+            text-align: center;
+        }
+
+        .section-label {
+            color: #2563eb;
+
+            font-size: 12px;
+            font-weight: 800;
+
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+        }
+
+        .section-header h2 {
+            margin-top: 9px;
+
+            font-size: 35px;
+            line-height: 1.2;
+
+            letter-spacing: -1px;
+        }
+
+        .section-header p {
+            margin-top: 12px;
+
+            color: #64748b;
+            font-size: 15px;
+        }
+
+        /* ================= WHY CAREER HUB ================= */
+
+        .benefit-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .benefit-card {
+            background: white;
+
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+
+            padding: 29px;
+
+            transition: 0.25s ease;
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-6px);
+
+            border-color: #bfdbfe;
+
+            box-shadow:
+                0 20px 45px rgba(15, 23, 42, 0.08);
+        }
+
+        .icon {
+            width: 50px;
+            height: 50px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #eff6ff;
+            color: #2563eb;
+
+            border-radius: 14px;
+
+            font-size: 21px;
+            font-weight: 900;
+
+            margin-bottom: 18px;
+        }
+
+        .benefit-card h3 {
+            font-size: 18px;
+            margin-bottom: 9px;
+        }
+
+        .benefit-card p {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.75;
+        }
+
+        /* ================= HOW IT WORKS ================= */
+
+        .steps-section {
+            background: white;
+
+            border-top: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .step {
+            position: relative;
+
+            padding: 28px;
+
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+
+            border-radius: 20px;
+        }
+
+        .step-number {
+            width: 38px;
+            height: 38px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: #2563eb;
+            color: white;
+
+            font-size: 14px;
+            font-weight: 900;
+
+            margin-bottom: 18px;
+        }
+
+        .step h3 {
+            font-size: 18px;
+            margin-bottom: 9px;
+        }
+
+        .step p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        /* ================= CANDIDATE / RECRUITER ================= */
+
+        .audience-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+
+        .audience-card {
+            padding: 38px;
+
+            border-radius: 23px;
+
+            border: 1px solid #e2e8f0;
+            background: white;
+        }
+
+        .audience-card.blue {
+            background: #eff6ff;
+            border-color: #dbeafe;
+        }
+
+        .audience-card.dark {
+            background: #0f172a;
+            border-color: #0f172a;
+            color: white;
+        }
+
+        .audience-card h3 {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        .audience-card p {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .audience-card.dark p {
+            color: #cbd5e1;
+        }
+
+        .audience-list {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .audience-list li {
+            margin-top: 11px;
+
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .audience-list li::before {
+            content: "✓";
+            margin-right: 9px;
+            color: #2563eb;
+            font-weight: 900;
+        }
+
+        .audience-card.dark .audience-list li::before {
+            color: #60a5fa;
+        }
+
+        /* ================= CTA ================= */
+
+        .cta-wrapper {
+            padding-bottom: 95px;
+        }
+
+        .cta {
+            position: relative;
+            overflow: hidden;
+
+            padding: 65px 35px;
+
+            border-radius: 28px;
+
+            text-align: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #0f172a,
+                    #1e3a8a,
+                    #2563eb
+                );
+
+            color: white;
+        }
+
+        .cta::after {
+            content: "";
+
+            position: absolute;
+
+            width: 260px;
+            height: 260px;
+
+            border-radius: 50%;
+
+            right: -80px;
+            top: -120px;
+
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        .cta h2 {
+            position: relative;
+            z-index: 1;
+
+            font-size: 36px;
+            letter-spacing: -1px;
+        }
+
+        .cta p {
+            position: relative;
+            z-index: 1;
+
+            max-width: 650px;
+            margin: 12px auto 25px;
+
+            color: #cbd5e1;
+            font-size: 15px;
+        }
+
+        .cta-button {
+            position: relative;
+            z-index: 1;
+
+            display: inline-flex;
+
+            background: white;
+            color: #1d4ed8;
+
+            padding: 14px 23px;
+
+            border-radius: 11px;
+
+            font-size: 14px;
+            font-weight: 900;
+
+            transition: 0.2s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            background: #020617;
+            color: #94a3b8;
+
+            padding: 38px 20px;
+        }
+
+        .footer-container {
+            width: min(1150px, 92%);
+            margin: auto;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+        }
+
+        .footer-logo {
+            color: white;
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .footer-logo span {
+            color: #60a5fa;
+        }
+
+        .footer-text {
+            font-size: 13px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-links a {
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 900px) {
+
+            .hero-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-description {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .hero-visual {
+                min-height: auto;
+            }
+
+            .benefit-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .steps {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+
+            nav {
+                min-height: 70px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .nav-button {
+                padding: 9px 14px;
+            }
+
+            .hero {
+                padding-top: 65px;
+            }
+
+            .hero h1 {
+                letter-spacing: -1.5px;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .primary-button,
+            .secondary-button {
+                width: 100%;
+                max-width: 280px;
+            }
+
+            .trust-container {
+                grid-template-columns: 1fr;
+                gap: 18px;
+            }
+
+            .benefit-grid,
+            .audience-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 70px 0;
+            }
+
+            .section-header h2 {
+                font-size: 29px;
+            }
+
+            .cta h2 {
+                font-size: 29px;
+            }
+
+            .footer-container {
+                flex-direction: column;
+                text-align: center;
+            }
         }
     </style>
 </head>
 
-<body class="bg-slate-950 text-white">
+<body>
 
-<!-- NAVBAR -->
+    <!-- ================= HEADER ================= -->
 
-<nav class="border-b border-slate-800/70 bg-slate-950/80 backdrop-blur-xl sticky top-0 z-50">
+    <header>
 
-    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <nav>
 
-        <a href="/" class="flex items-center gap-3">
-
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-blue-500 flex items-center justify-center font-black">
-                CH
-            </div>
-
-            <div>
-                <div class="font-display font-extrabold text-lg">
-                    Career Hub
-                </div>
-
-                <div class="text-[10px] text-slate-500 uppercase tracking-widest">
-                    Career platform
-                </div>
-            </div>
-
-        </a>
-
-        <div class="flex items-center gap-3">
-
-            <a href="/login"
-               class="px-4 py-2.5 text-sm font-semibold text-slate-300 hover:text-white transition">
-                Log in
+            <a href="/" class="logo">
+                Career<span>Hub</span>
             </a>
 
-            <a href="/signup"
-               class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-sm font-semibold transition shadow-lg shadow-indigo-600/20">
+            <div class="nav-links">
+
+                <a href="/features">
+                    Features
+                </a>
+
+                <a href="/about">
+                    About
+                </a>
+
+                <a href="/login">
+                    Login
+                </a>
+
+            </div>
+
+            <a href="/signup" class="nav-button">
                 Get Started
             </a>
 
-        </div>
+        </nav>
 
-    </div>
-
-</nav>
+    </header>
 
 
-<!-- HERO -->
+    <!-- ================= HERO ================= -->
 
-<section class="relative overflow-hidden">
+    <main>
 
-    <div class="absolute inset-0 grid-bg opacity-60"></div>
+        <section class="hero">
 
-    <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-[650px] h-[650px] bg-indigo-600/15 blur-3xl rounded-full"></div>
+            <div class="hero-container">
 
-    <div class="relative max-w-7xl mx-auto px-6 pt-24 pb-20">
+                <div class="hero-content">
 
-        <div class="grid lg:grid-cols-2 gap-16 items-center">
+                    <div class="hero-badge">
+                        <span class="badge-dot"></span>
+                        Smarter Career Decisions
+                    </div>
 
-            <div>
+                    <h1>
+                        Your skills deserve
+                        <span>the right opportunity.</span>
+                    </h1>
 
-                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-indigo-500/20 bg-indigo-500/10 text-indigo-300 text-xs font-semibold mb-7">
+                    <p class="hero-description">
+                        Career Hub helps you discover meaningful jobs,
+                        understand how your resume matches them, and
+                        improve your professional profile with
+                        AI-powered insights.
+                    </p>
 
-                    <span class="w-2 h-2 rounded-full bg-indigo-400"></span>
+                    <div class="hero-buttons">
 
-                    Your next opportunity starts here
+                        <a href="/signup" class="primary-button">
+                            Start Your Career Journey →
+                        </a>
 
-                </div>
-
-
-                <h1 class="font-display text-5xl md:text-6xl font-extrabold leading-[1.05] tracking-tight">
-
-                    Build your future.
-
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-blue-400">
-                        Make your next move.
-                    </span>
-
-                </h1>
-
-
-                <p class="mt-7 text-lg leading-8 text-slate-400 max-w-xl">
-
-                    Career Hub connects ambitious professionals with meaningful opportunities
-                    and helps recruiters discover the right talent faster.
-
-                </p>
-
-
-                <div class="mt-9 flex flex-wrap gap-4">
-
-                    <a href="/signup"
-                       class="px-6 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 font-semibold transition shadow-xl shadow-indigo-600/20">
-
-                        Create your account
-
-                        <i class="fa-solid fa-arrow-right ml-2 text-xs"></i>
-
-                    </a>
-
-                    <a href="/login"
-                       class="px-6 py-3.5 rounded-xl border border-slate-700 bg-slate-900/60 hover:bg-slate-800 font-semibold transition">
-
-                        Sign in
-
-                    </a>
-
-                </div>
-
-
-                <div class="mt-10 flex flex-wrap gap-6 text-sm text-slate-500">
-
-                    <span>
-                        <i class="fa-solid fa-circle-check text-indigo-400 mr-2"></i>
-                        Smart job discovery
-                    </span>
-
-                    <span>
-                        <i class="fa-solid fa-circle-check text-indigo-400 mr-2"></i>
-                        AI-powered matching
-                    </span>
-
-                    <span>
-                        <i class="fa-solid fa-circle-check text-indigo-400 mr-2"></i>
-                        Simple applications
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <!-- RIGHT CARD -->
-
-            <div class="relative">
-
-                <div class="absolute inset-0 bg-indigo-500/10 blur-3xl rounded-full"></div>
-
-                <div class="relative bg-slate-900/80 border border-slate-800 rounded-3xl p-7 glow backdrop-blur-xl">
-
-                    <div class="flex items-center justify-between mb-8">
-
-                        <div>
-
-                            <p class="text-xs text-slate-500 uppercase tracking-widest">
-                                Career Hub
-                            </p>
-
-                            <h2 class="font-display text-xl font-bold mt-1">
-                                Move forward with confidence.
-                            </h2>
-
-                        </div>
-
-                        <div class="w-11 h-11 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center">
-                            <i class="fa-solid fa-rocket"></i>
-                        </div>
+                        <a href="/features" class="secondary-button">
+                            Explore Features
+                        </a>
 
                     </div>
 
+                </div>
 
-                    <div class="space-y-4">
 
-                        <div class="flex gap-4 p-4 rounded-2xl bg-slate-950/80 border border-slate-800">
+                <!-- HERO DASHBOARD VISUAL -->
 
-                            <div class="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center flex-shrink-0">
-                                <i class="fa-solid fa-user-plus"></i>
+                <div class="hero-visual">
+
+                    <div class="dashboard-card">
+
+                        <div class="dashboard-top">
+
+                            <div class="dashboard-title">
+                                Resume Match
                             </div>
 
-                            <div>
-                                <h3 class="font-semibold">
-                                    Create your profile
-                                </h3>
-
-                                <p class="text-sm text-slate-500 mt-1">
-                                    Tell us who you are and what you're looking for.
-                                </p>
-                            </div>
-
-                        </div>
-
-
-                        <div class="flex gap-4 p-4 rounded-2xl bg-slate-950/80 border border-slate-800">
-
-                            <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center flex-shrink-0">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                            </div>
-
-                            <div>
-                                <h3 class="font-semibold">
-                                    Discover opportunities
-                                </h3>
-
-                                <p class="text-sm text-slate-500 mt-1">
-                                    Explore roles that match your skills and goals.
-                                </p>
+                            <div class="status">
+                                AI Analysis
                             </div>
 
                         </div>
 
 
-                        <div class="flex gap-4 p-4 rounded-2xl bg-slate-950/80 border border-slate-800">
+                        <div class="score-box">
 
-                            <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center flex-shrink-0">
-                                <i class="fa-solid fa-chart-line"></i>
+                            <div class="score-label">
+                                Job Compatibility
                             </div>
 
-                            <div>
-                                <h3 class="font-semibold">
-                                    Take the next step
-                                </h3>
-
-                                <p class="text-sm text-slate-500 mt-1">
-                                    Apply with confidence and track your progress.
-                                </p>
+                            <div class="score">
+                                87<span>%</span>
                             </div>
+
+                            <div class="progress">
+
+                                <div class="progress-fill"></div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="mini-row">
+
+                            <span class="mini-name">
+                                Relevant Skills
+                            </span>
+
+                            <span class="mini-value">
+                                Strong
+                            </span>
+
+                        </div>
+
+
+                        <div class="mini-row">
+
+                            <span class="mini-name">
+                                Experience Match
+                            </span>
+
+                            <span class="mini-value">
+                                Good
+                            </span>
+
+                        </div>
+
+
+                        <div class="mini-row">
+
+                            <span class="mini-name">
+                                Resume Keywords
+                            </span>
+
+                            <span class="mini-value">
+                                14 matched
+                            </span>
 
                         </div>
 
@@ -259,110 +1004,380 @@
 
             </div>
 
-        </div>
-
-    </div>
-
-</section>
+        </section>
 
 
-<!-- FEATURES -->
+        <!-- ================= TRUST STRIP ================= -->
 
-<section class="border-t border-slate-900 bg-slate-950">
+        <section class="trust-strip">
 
-    <div class="max-w-7xl mx-auto px-6 py-20">
+            <div class="trust-container">
 
-        <div class="text-center max-w-2xl mx-auto">
+                <div class="trust-item">
 
-            <p class="text-indigo-400 text-xs font-bold uppercase tracking-widest">
-                One platform. Two journeys.
-            </p>
+                    <strong>AI-Powered</strong>
 
-            <h2 class="font-display text-3xl md:text-4xl font-extrabold mt-3">
-                Everything you need to move forward.
-            </h2>
+                    <span>
+                        Resume insights for smarter applications
+                    </span>
 
-            <p class="text-slate-500 mt-4">
-                Whether you're building your career or building your team,
-                Career Hub keeps the process simple and focused.
-            </p>
-
-        </div>
-
-
-        <div class="grid md:grid-cols-2 gap-6 mt-12">
-
-            <div class="p-7 rounded-3xl border border-slate-800 bg-slate-900/50">
-
-                <div class="w-12 h-12 rounded-2xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center">
-                    <i class="fa-solid fa-user-tie"></i>
                 </div>
 
-                <h3 class="font-display text-xl font-bold mt-6">
-                    For candidates
-                </h3>
+                <div class="trust-item">
 
-                <p class="text-slate-500 mt-3 leading-7">
-                    Find relevant roles, apply with your CV and see how your
-                    application performs against the job requirements.
+                    <strong>Career Focused</strong>
+
+                    <span>
+                        Designed around real career journeys
+                    </span>
+
+                </div>
+
+                <div class="trust-item">
+
+                    <strong>One Platform</strong>
+
+                    <span>
+                        Jobs, applications and recruitment together
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= BENEFITS ================= -->
+
+        <section class="section">
+
+            <div class="section-header">
+
+                <span class="section-label">
+                    Why Career Hub
+                </span>
+
+                <h2>
+                    Turn your career search into a smarter journey.
+                </h2>
+
+                <p>
+                    Instead of sending resumes blindly, understand
+                    your profile, discover opportunities and take
+                    better career decisions.
                 </p>
-
-                <a href="/signup"
-                   class="inline-flex items-center gap-2 text-indigo-400 font-semibold text-sm mt-6">
-                    Start your career journey
-                    <i class="fa-solid fa-arrow-right text-xs"></i>
-                </a>
 
             </div>
 
 
-            <div class="p-7 rounded-3xl border border-slate-800 bg-slate-900/50">
+            <div class="benefit-grid">
 
-                <div class="w-12 h-12 rounded-2xl bg-blue-500/10 text-blue-400 flex items-center justify-center">
-                    <i class="fa-solid fa-building"></i>
+
+                <div class="benefit-card">
+
+                    <div class="icon">
+                        AI
+                    </div>
+
+                    <h3>
+                        Understand Your Resume
+                    </h3>
+
+                    <p>
+                        Upload your CV and get AI-powered insights
+                        about your job match, missing skills and
+                        areas that can be improved.
+                    </p>
+
                 </div>
 
-                <h3 class="font-display text-xl font-bold mt-6">
-                    For recruiters
-                </h3>
 
-                <p class="text-slate-500 mt-3 leading-7">
-                    Publish opportunities, review applications and quickly
-                    identify candidates whose skills align with your roles.
+                <div class="benefit-card">
+
+                    <div class="icon">
+                        ↗
+                    </div>
+
+                    <h3>
+                        Find Better Opportunities
+                    </h3>
+
+                    <p>
+                        Explore jobs posted by recruiters and
+                        discover opportunities that align with
+                        your skills and professional goals.
+                    </p>
+
+                </div>
+
+
+                <div class="benefit-card">
+
+                    <div class="icon">
+                        ✓
+                    </div>
+
+                    <h3>
+                        Apply With Confidence
+                    </h3>
+
+                    <p>
+                        Know where your resume stands before
+                        applying and use practical feedback to
+                        strengthen your professional profile.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= HOW IT WORKS ================= -->
+
+        <section class="steps-section">
+
+            <div class="section">
+
+                <div class="section-header">
+
+                    <span class="section-label">
+                        Simple Process
+                    </span>
+
+                    <h2>
+                        From resume to opportunity in three steps.
+                    </h2>
+
+                </div>
+
+
+                <div class="steps">
+
+
+                    <div class="step">
+
+                        <div class="step-number">
+                            01
+                        </div>
+
+                        <h3>
+                            Create Your Profile
+                        </h3>
+
+                        <p>
+                            Sign up and build your professional
+                            profile so Career Hub can understand
+                            your career direction.
+                        </p>
+
+                    </div>
+
+
+                    <div class="step">
+
+                        <div class="step-number">
+                            02
+                        </div>
+
+                        <h3>
+                            Analyze & Discover
+                        </h3>
+
+                        <p>
+                            Upload your resume, explore jobs and
+                            use AI insights to understand your
+                            compatibility with opportunities.
+                        </p>
+
+                    </div>
+
+
+                    <div class="step">
+
+                        <div class="step-number">
+                            03
+                        </div>
+
+                        <h3>
+                            Apply & Grow
+                        </h3>
+
+                        <p>
+                            Apply to suitable jobs and keep
+                            improving your professional profile
+                            with better career insights.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= FOR WHO ================= -->
+
+        <section class="section">
+
+            <div class="section-header">
+
+                <span class="section-label">
+                    Built For Both Sides
+                </span>
+
+                <h2>
+                    One platform. Two powerful career experiences.
+                </h2>
+
+            </div>
+
+
+            <div class="audience-grid">
+
+
+                <!-- Candidate -->
+
+                <div class="audience-card blue">
+
+                    <h3>
+                        For Candidates
+                    </h3>
+
+                    <p>
+                        Take control of your career search with
+                        tools that help you understand your resume,
+                        discover opportunities and apply smarter.
+                    </p>
+
+                    <ul class="audience-list">
+
+                        <li>
+                            AI-powered resume analysis
+                        </li>
+
+                        <li>
+                            Job discovery
+                        </li>
+
+                        <li>
+                            Match score and feedback
+                        </li>
+
+                        <li>
+                            Missing skills insights
+                        </li>
+
+                    </ul>
+
+                </div>
+
+
+                <!-- Recruiter -->
+
+                <div class="audience-card dark">
+
+                    <h3>
+                        For Recruiters
+                    </h3>
+
+                    <p>
+                        Simplify your hiring workflow with a
+                        dedicated space to publish opportunities
+                        and manage candidate applications.
+                    </p>
+
+                    <ul class="audience-list">
+
+                        <li>
+                            Create job postings
+                        </li>
+
+                        <li>
+                            Manage vacancies
+                        </li>
+
+                        <li>
+                            View candidate applications
+                        </li>
+
+                        <li>
+                            Organize recruitment activity
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= CTA ================= -->
+
+        <section class="section cta-wrapper">
+
+            <div class="cta">
+
+                <h2>
+                    Your next opportunity could start here.
+                </h2>
+
+                <p>
+                    Build your profile, explore opportunities and
+                    take the next step toward a career that matches
+                    your skills and ambitions.
                 </p>
 
-                <a href="/signup"
-                   class="inline-flex items-center gap-2 text-blue-400 font-semibold text-sm mt-6">
-                    Build your talent pipeline
-                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                <a href="/signup" class="cta-button">
+                    Create Your Career Hub Account →
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <div class="footer-container">
+
+            <div class="footer-logo">
+                Career<span>Hub</span>
+            </div>
+
+            <div class="footer-text">
+                © Career Hub 2026. All rights reserved.
+            </div>
+
+            <div class="footer-links">
+
+                <a href="/features">
+                    Features
+                </a>
+
+                <a href="/about">
+                    About
+                </a>
+
+                <a href="/login">
+                    Login
                 </a>
 
             </div>
 
         </div>
 
-    </div>
-
-</section>
-
-
-<!-- FOOTER -->
-
-<footer class="border-t border-slate-900">
-
-    <div class="max-w-7xl mx-auto px-6 py-8 flex flex-col md:flex-row gap-4 justify-between text-sm text-slate-600">
-
-        <span>
-            © 2026 Career Hub
-        </span>
-
-        <span>
-            Connect. Discover. Grow.
-        </span>
-
-    </div>
-
-</footer>
+    </footer>
 
 </body>
 </html>

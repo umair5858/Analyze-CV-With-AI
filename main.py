@@ -374,6 +374,26 @@ async def signup_page(request: Request):
         request=request,
         name="signup.html"
     )
+    # ============================================================
+# ABOUT & FEATURES PAGES
+# ============================================================
+
+@app.get("/about", response_class=HTMLResponse)
+async def about_page(request: Request):
+
+    return templates.TemplateResponse(
+        request=request,
+        name="about.html"
+    )
+
+
+@app.get("/features", response_class=HTMLResponse)
+async def features_page(request: Request):
+
+    return templates.TemplateResponse(
+        request=request,
+        name="features.html"
+    )
 
 
 @app.get(
@@ -404,6 +424,7 @@ async def recruiter_dashboard_page(request: Request):
 # SIGNUP
 # ============================================================
 
+
 @app.post("/api/signup")
 async def register_user(
     name: str = Form(...),
@@ -411,18 +432,16 @@ async def register_user(
     password: str = Form(...),
     role: str = Form("candidate")
 ):
-
     role = role.lower().strip()
+    clean_email = email.strip().lower()
 
     if role not in ["candidate", "recruiter"]:
-
         raise HTTPException(
             status_code=400,
             detail="Please select a valid account role."
         )
 
     if len(password) < 4:
-
         raise HTTPException(
             status_code=400,
             detail="Password must contain at least 4 characters."
@@ -431,28 +450,31 @@ async def register_user(
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    try:
+    # 1. Manually check if email already exists
+    cursor.execute("SELECT id FROM users WHERE LOWER(email) = ?", (clean_email,))
+    existing_user = cursor.fetchone()
 
+    if existing_user:
+        conn.close()
+        raise HTTPException(
+            status_code=400,
+            detail="An account with this email already exists."
+        )
+
+    # 2. Insert new user if email is unique
+    try:
         password_hash = hash_password(password)
 
         cursor.execute(
             """
-            INSERT INTO users
-            (name, email, password, role)
+            INSERT INTO users (name, email, password, role)
             VALUES (?, ?, ?, ?)
             """,
-            (
-                name.strip(),
-                email.strip().lower(),
-                password_hash,
-                role
-            )
+            (name.strip(), clean_email, password_hash, role)
         )
 
         conn.commit()
-
         new_id = cursor.lastrowid
-
         conn.close()
 
         return {
@@ -461,20 +483,18 @@ async def register_user(
             "user": {
                 "id": new_id,
                 "name": name.strip(),
-                "email": email.strip().lower(),
+                "email": clean_email,
                 "role": role
             }
         }
 
-    except sqlite3.IntegrityError:
-
+    except Exception as e:
         conn.close()
-
+        print("DATABASE ERROR:", str(e))
         raise HTTPException(
-            status_code=400,
-            detail="An account with this email already exists."
+            status_code=500,
+            detail=f"Database insertion failed: {str(e)}"
         )
-
 
 # ============================================================
 # LOGIN

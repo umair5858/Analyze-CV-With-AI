@@ -1,0 +1,812 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Features | Career Hub</title>
+
+    <meta
+        name="description"
+        content="Explore Career Hub's AI-powered career and recruitment features."
+    >
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f8fafc;
+            color: #0f172a;
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* HEADER */
+
+        header {
+            background: rgba(255, 255, 255, 0.97);
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        nav {
+            width: min(1150px, 92%);
+            min-height: 76px;
+            margin: auto;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            color: #0f172a;
+            font-size: 23px;
+            font-weight: 800;
+        }
+
+        .logo span {
+            color: #2563eb;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .nav-links a {
+            color: #475569;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .nav-links a:hover {
+            color: #2563eb;
+        }
+
+        .nav-links .active {
+            color: #2563eb;
+        }
+
+        .nav-button {
+            background: #2563eb;
+            color: white;
+
+            padding: 11px 18px;
+            border-radius: 10px;
+
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .nav-button:hover {
+            background: #1d4ed8;
+        }
+
+        /* HERO */
+
+        .hero {
+            padding: 85px 20px 75px;
+
+            text-align: center;
+
+            background:
+                radial-gradient(
+                    circle at 15% 20%,
+                    rgba(37, 99, 235, 0.12),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at 85% 30%,
+                    rgba(124, 58, 237, 0.10),
+                    transparent 32%
+                );
+        }
+
+        .hero-content {
+            width: min(760px, 92%);
+            margin: auto;
+        }
+
+        .label {
+            color: #2563eb;
+            font-size: 12px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+        }
+
+        .hero h1 {
+            margin-top: 12px;
+
+            font-size: clamp(38px, 6vw, 58px);
+            line-height: 1.08;
+            letter-spacing: -2px;
+        }
+
+        .hero h1 span {
+            color: #2563eb;
+        }
+
+        .hero p {
+            margin: 18px auto 0;
+
+            max-width: 650px;
+
+            color: #64748b;
+            font-size: 16px;
+        }
+
+        /* FEATURES */
+
+        .section {
+            width: min(1150px, 92%);
+            margin: auto;
+            padding: 75px 0;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .feature-card {
+            background: white;
+
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+
+            padding: 30px;
+
+            transition: 0.25s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-6px);
+
+            border-color: #bfdbfe;
+
+            box-shadow:
+                0 20px 45px rgba(15, 23, 42, 0.08);
+        }
+
+        .icon {
+            width: 52px;
+            height: 52px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin-bottom: 20px;
+
+            background: #eff6ff;
+            color: #2563eb;
+
+            border-radius: 15px;
+
+            font-size: 18px;
+            font-weight: 900;
+        }
+
+        .feature-card h2 {
+            font-size: 19px;
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        /* FEATURE HIGHLIGHT */
+
+        .highlight {
+            background: white;
+            border-top: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .highlight-container {
+            width: min(1050px, 92%);
+            margin: auto;
+
+            padding: 75px 0;
+
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .highlight h2 {
+            font-size: 34px;
+            line-height: 1.2;
+            margin-top: 10px;
+        }
+
+        .highlight p {
+            margin-top: 15px;
+            color: #64748b;
+            font-size: 15px;
+        }
+
+        .check-list {
+            list-style: none;
+            margin-top: 22px;
+        }
+
+        .check-list li {
+            margin-top: 12px;
+
+            color: #334155;
+
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .check-list li::before {
+            content: "✓";
+
+            color: #2563eb;
+            font-weight: 900;
+
+            margin-right: 10px;
+        }
+
+        .score-card {
+            background: #0f172a;
+            color: white;
+
+            border-radius: 24px;
+            padding: 32px;
+
+            box-shadow:
+                0 25px 60px rgba(15, 23, 42, 0.16);
+        }
+
+        .score-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .score-title {
+            font-weight: 800;
+        }
+
+        .score-status {
+            color: #6ee7b7;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .score-number {
+            margin-top: 25px;
+
+            font-size: 58px;
+            font-weight: 900;
+        }
+
+        .score-number span {
+            color: #94a3b8;
+            font-size: 20px;
+        }
+
+        .bar {
+            height: 9px;
+
+            background: #334155;
+            border-radius: 99px;
+
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            width: 87%;
+            height: 100%;
+
+            background: #60a5fa;
+            border-radius: 99px;
+        }
+
+        .score-items {
+            margin-top: 20px;
+        }
+
+        .score-item {
+            display: flex;
+            justify-content: space-between;
+
+            padding: 12px 0;
+
+            border-bottom: 1px solid #1e293b;
+
+            font-size: 13px;
+        }
+
+        .score-item:last-child {
+            border-bottom: none;
+        }
+
+        .score-item span:last-child {
+            color: #6ee7b7;
+            font-weight: 800;
+        }
+
+        /* CTA */
+
+        .cta {
+            width: min(1050px, 92%);
+            margin: 0 auto 80px;
+
+            padding: 60px 30px;
+
+            text-align: center;
+
+            border-radius: 25px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #0f172a,
+                    #1d4ed8
+                );
+
+            color: white;
+        }
+
+        .cta h2 {
+            font-size: 34px;
+        }
+
+        .cta p {
+            max-width: 650px;
+            margin: 12px auto 24px;
+
+            color: #cbd5e1;
+            font-size: 14px;
+        }
+
+        .cta a {
+            display: inline-block;
+
+            background: white;
+            color: #1d4ed8;
+
+            padding: 13px 22px;
+
+            border-radius: 10px;
+
+            font-size: 14px;
+            font-weight: 900;
+        }
+
+        /* FOOTER */
+
+        footer {
+            background: #020617;
+            color: #94a3b8;
+            padding: 35px 20px;
+        }
+
+        .footer-container {
+            width: min(1150px, 92%);
+            margin: auto;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .footer-logo {
+            color: white;
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .footer-logo span {
+            color: #60a5fa;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-links a {
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 850px) {
+
+            .feature-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .highlight-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 650px) {
+
+            .nav-links {
+                display: none;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                padding-top: 65px;
+            }
+
+            .footer-container {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <nav>
+
+        <a href="/" class="logo">
+            Career<span>Hub</span>
+        </a>
+
+        <div class="nav-links">
+
+            <a href="/features" class="active">
+                Features
+            </a>
+
+            <a href="/about">
+                About
+            </a>
+
+            <a href="/login">
+                Login
+            </a>
+
+        </div>
+
+        <a href="/signup" class="nav-button">
+            Get Started
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main>
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <span class="label">
+                Career Hub Features
+            </span>
+
+            <h1>
+                Everything you need to
+                <span>move your career forward.</span>
+            </h1>
+
+            <p>
+                Career Hub brings career discovery, AI-powered resume
+                insights and recruitment management into one simple
+                professional platform.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- FEATURE CARDS -->
+
+    <section class="section">
+
+        <div class="feature-grid">
+
+            <div class="feature-card">
+
+                <div class="icon">
+                    AI
+                </div>
+
+                <h2>
+                    AI Resume Analysis
+                </h2>
+
+                <p>
+                    Upload your resume and let AI analyze it against
+                    a job's requirements. Understand your compatibility
+                    before you apply.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="icon">
+                    %
+                </div>
+
+                <h2>
+                    Match Scoring
+                </h2>
+
+                <p>
+                    Get a clear compatibility score that helps you
+                    understand how closely your resume aligns with
+                    a specific opportunity.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="icon">
+                    !
+                </div>
+
+                <h2>
+                    Missing Skills
+                </h2>
+
+                <p>
+                    Identify important skills or keywords missing
+                    from your resume and discover where your profile
+                    can become stronger.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="icon">
+                    ↗
+                </div>
+
+                <h2>
+                    Job Discovery
+                </h2>
+
+                <p>
+                    Browse recruiter-posted opportunities and find
+                    roles that fit your experience, skills and career
+                    direction.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="icon">
+                    CV
+                </div>
+
+                <h2>
+                    Resume Feedback
+                </h2>
+
+                <p>
+                    Receive practical feedback designed to help you
+                    improve your resume and present your experience
+                    more effectively.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="icon">
+                    R
+                </div>
+
+                <h2>
+                    Recruiter Dashboard
+                </h2>
+
+                <p>
+                    Recruiters can publish jobs, manage vacancies and
+                    view applications from candidates in one organized
+                    dashboard.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- AI HIGHLIGHT -->
+
+    <section class="highlight">
+
+        <div class="highlight-container">
+
+            <div>
+
+                <span class="label">
+                    Smarter Applications
+                </span>
+
+                <h2>
+                    Don't just apply.
+                    Understand your chances.
+                </h2>
+
+                <p>
+                    Career Hub gives candidates useful information
+                    before they submit an application. Compare your
+                    resume with job requirements and use the feedback
+                    to make better career decisions.
+                </p>
+
+                <ul class="check-list">
+
+                    <li>
+                        Resume-to-job compatibility analysis
+                    </li>
+
+                    <li>
+                        Match percentage
+                    </li>
+
+                    <li>
+                        Missing skills identification
+                    </li>
+
+                    <li>
+                        Personalized improvement feedback
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+            <div class="score-card">
+
+                <div class="score-top">
+
+                    <span class="score-title">
+                        AI Resume Match
+                    </span>
+
+                    <span class="score-status">
+                        ANALYZED
+                    </span>
+
+                </div>
+
+                <div class="score-number">
+                    87<span>%</span>
+                </div>
+
+                <div class="bar">
+
+                    <div class="bar-fill"></div>
+
+                </div>
+
+                <div class="score-items">
+
+                    <div class="score-item">
+                        <span>Skills</span>
+                        <span>Strong</span>
+                    </div>
+
+                    <div class="score-item">
+                        <span>Experience</span>
+                        <span>Good</span>
+                    </div>
+
+                    <div class="score-item">
+                        <span>Keywords</span>
+                        <span>14 matched</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CTA -->
+
+    <div class="cta">
+
+        <h2>
+            Ready to build your next career move?
+        </h2>
+
+        <p>
+            Create your Career Hub account and start exploring
+            smarter ways to improve your resume and discover
+            opportunities.
+        </p>
+
+        <a href="/signup">
+            Get Started →
+        </a>
+
+    </div>
+
+</main>
+
+
+<footer>
+
+    <div class="footer-container">
+
+        <div class="footer-logo">
+            Career<span>Hub</span>
+        </div>
+
+        <div>
+            © Career Hub 2026. All rights reserved.
+        </div>
+
+        <div class="footer-links">
+
+            <a href="/">
+                Home
+            </a>
+
+            <a href="/about">
+                About
+            </a>
+
+            <a href="/login">
+                Login
+            </a>
+
+        </div>
+
+    </div>
+
+</footer>
+
+</body>
+</html>
