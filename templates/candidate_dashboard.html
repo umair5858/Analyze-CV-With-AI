@@ -4,12 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Career Hub | Candidate Dashboard</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         body {
@@ -19,535 +24,1588 @@
         .font-display {
             font-family: 'Manrope', sans-serif;
         }
+
+        .score-ring {
+            background:
+                conic-gradient(
+                    rgb(99 102 241) var(--score),
+                    rgb(30 41 59) var(--score)
+                );
+        }
+
+        .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
     </style>
 </head>
 
 <body class="bg-slate-950 text-white min-h-screen">
 
-    <!-- NAVBAR -->
-    <nav class="border-b border-slate-800 bg-slate-950/95">
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <nav class="border-b border-slate-800 bg-slate-950/95 sticky top-0 z-40">
+
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+
             <a href="/" class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-blue-500 flex items-center justify-center font-black">
+
+                <div
+                    class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-blue-500 flex items-center justify-center font-black">
                     CH
                 </div>
+
                 <span class="font-display font-extrabold text-lg">
                     Career Hub
                 </span>
+
             </a>
 
             <div class="flex items-center gap-4">
+
                 <div class="text-right">
+
                     <p id="userName" class="text-sm font-semibold">
                         Candidate
                     </p>
+
                     <p id="userCity" class="text-xs text-slate-500">
                         Complete your profile
                     </p>
+
                 </div>
 
-                <button onclick="logout()" class="w-10 h-10 rounded-xl border border-slate-800 text-slate-400 hover:text-white">
+                <button onclick="logout()"
+                    class="w-10 h-10 rounded-xl border border-slate-800 text-slate-400 hover:text-white hover:border-slate-600 transition">
+
                     <i class="fa-solid fa-right-from-bracket"></i>
+
                 </button>
+
             </div>
+
         </div>
+
     </nav>
+
 
     <main class="max-w-7xl mx-auto px-6 py-10">
 
-        <!-- HEADER -->
+
+        <!-- =====================================================
+             HEADER
+        ====================================================== -->
+
         <div class="mb-10">
+
             <p class="text-indigo-400 text-xs font-bold uppercase tracking-widest">
                 Candidate workspace
             </p>
+
             <h1 class="font-display text-3xl md:text-4xl font-extrabold mt-2">
                 Build your next career move.
             </h1>
+
             <p class="text-slate-500 mt-3 max-w-2xl">
-                Create your profile, discover opportunities in your city, apply with your CV and understand how strongly your resume matches each role.
+                Discover relevant jobs, apply with your CV and get AI-powered
+                feedback to understand how well your resume fits each opportunity.
             </p>
+
         </div>
 
-        <!-- PROFILE + STATS -->
-        <div class="grid lg:grid-cols-3 gap-6 mb-10">
+
+        <!-- =====================================================
+             PROFILE + STATS
+        ====================================================== -->
+
+        <div class="grid lg:grid-cols-3 gap-6 mb-12">
+
 
             <!-- PROFILE -->
+
             <div class="lg:col-span-2 p-6 rounded-3xl bg-slate-900 border border-slate-800">
+
                 <div class="flex items-center justify-between mb-6">
+
                     <div>
+
                         <p class="text-indigo-400 text-xs uppercase tracking-widest font-bold">
                             Your profile
                         </p>
+
                         <h2 class="font-display text-xl font-bold mt-1">
                             Make your profile stand out
                         </h2>
+
                     </div>
+
                     <i class="fa-solid fa-user-pen text-indigo-400 text-xl"></i>
+
                 </div>
+
 
                 <div class="grid md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="text-xs text-slate-500">Full name</label>
-                        <input id="profileName" class="w-full mt-2 bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm outline-none focus:border-indigo-500">
-                    </div>
+
 
                     <div>
-                        <label class="text-xs text-slate-500">Email</label>
-                        <input id="profileEmail" type="email" disabled class="w-full mt-2 bg-slate-900/50 text-slate-400 border border-slate-800 rounded-xl px-4 py-3 text-sm cursor-not-allowed outline-none">
+
+                        <label class="text-xs text-slate-500">
+                            Full name
+                        </label>
+
+                        <input id="profileName"
+                            class="w-full mt-2 bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm outline-none focus:border-indigo-500">
+
                     </div>
 
-                    <div class="md:col-span-2">
-                        <label class="text-xs text-slate-500">City</label>
-                        <input id="profileCity" placeholder="e.g. Lahore, Karachi, Islamabad" class="w-full mt-2 bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm outline-none focus:border-indigo-500">
+
+                    <div>
+
+                        <label class="text-xs text-slate-500">
+                            Email
+                        </label>
+
+                        <input id="profileEmail"
+                            type="email"
+                            disabled
+                            class="w-full mt-2 bg-slate-900/50 text-slate-400 border border-slate-800 rounded-xl px-4 py-3 text-sm cursor-not-allowed outline-none">
+
                     </div>
 
-                    <div class="md:col-span-2">
-                        <label class="text-xs text-slate-500">Bio / Short description</label>
-                        <textarea id="profileBio" rows="3" placeholder="Briefly describe your skills, interests and career goals..." class="w-full mt-2 bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm outline-none focus:border-indigo-500"></textarea>
-                    </div>
 
                     <div class="md:col-span-2">
-                        <button onclick="saveProfile()" class="px-5 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 font-semibold">
-                            <i class="fa-solid fa-floppy-disk mr-2"></i> Save profile
+
+                        <label class="text-xs text-slate-500">
+                            City
+                        </label>
+
+                        <input id="profileCity"
+                            placeholder="e.g. Lahore, Karachi, Islamabad"
+                            class="w-full mt-2 bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm outline-none focus:border-indigo-500">
+
+                    </div>
+
+
+                    <div class="md:col-span-2">
+
+                        <label class="text-xs text-slate-500">
+                            Bio / Professional summary
+                        </label>
+
+                        <textarea id="profileBio"
+                            rows="4"
+                            placeholder="Describe your experience, skills and career goals..."
+                            class="w-full mt-2 bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm outline-none focus:border-indigo-500"></textarea>
+
+                    </div>
+
+
+                    <div class="md:col-span-2">
+
+                        <button onclick="saveProfile()"
+                            class="px-5 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 font-semibold transition">
+
+                            <i class="fa-solid fa-floppy-disk mr-2"></i>
+
+                            Save profile
+
                         </button>
-                        <span id="profileMessage" class="ml-3 text-sm text-slate-500"></span>
+
+                        <span id="profileMessage"
+                            class="ml-3 text-sm text-slate-500"></span>
+
                     </div>
+
                 </div>
+
             </div>
 
-            <!-- STATS -->
-            <div class="p-6 rounded-3xl border border-slate-800 bg-gradient-to-br from-indigo-600/20 to-slate-900">
-                <div class="w-12 h-12 rounded-2xl bg-indigo-500/20 text-indigo-300 flex items-center justify-center">
+
+            <!-- APPLICATION STATS -->
+
+            <div
+                class="p-6 rounded-3xl border border-slate-800 bg-gradient-to-br from-indigo-600/20 to-slate-900">
+
+                <div
+                    class="w-12 h-12 rounded-2xl bg-indigo-500/20 text-indigo-300 flex items-center justify-center">
+
                     <i class="fa-solid fa-chart-simple"></i>
+
                 </div>
+
                 <h2 class="font-display text-xl font-bold mt-6">
-                    Your applications
+                    Application activity
                 </h2>
+
                 <p class="text-sm text-slate-500 mt-2">
-                    Track your applications and AI resume matching results.
+                    Track your applications and AI resume evaluations.
                 </p>
 
                 <div class="mt-7">
-                    <div id="applicationCount" class="text-4xl font-display font-extrabold">0</div>
-                    <p class="text-xs text-slate-500 mt-1">Applications submitted</p>
+
+                    <div id="applicationCount"
+                        class="text-4xl font-display font-extrabold">
+                        0
+                    </div>
+
+                    <p class="text-xs text-slate-500 mt-1">
+                        Applications submitted
+                    </p>
+
                 </div>
+
             </div>
 
         </div>
 
-        <!-- JOB SEARCH -->
+
+        <!-- =====================================================
+             JOB SEARCH
+        ====================================================== -->
+
         <section class="mb-12">
+
             <div class="mb-5">
-                <p class="text-indigo-400 text-xs font-bold uppercase tracking-widest">Opportunities</p>
-                <h2 class="font-display text-2xl font-bold mt-1">Find jobs that fit your career</h2>
-                <p class="text-sm text-slate-500 mt-1">Search by job, company, skill or city.</p>
+
+                <p class="text-indigo-400 text-xs font-bold uppercase tracking-widest">
+                    Opportunities
+                </p>
+
+                <h2 class="font-display text-2xl font-bold mt-1">
+                    Find jobs that fit your career
+                </h2>
+
+                <p class="text-sm text-slate-500 mt-1">
+                    Search jobs by title, company, description or city.
+                </p>
+
             </div>
+
 
             <div class="p-6 rounded-3xl bg-slate-900 border border-slate-800">
+
+
                 <div class="grid md:grid-cols-3 gap-4">
+
                     <div class="md:col-span-2 relative">
-                        <i class="fa-solid fa-magnifying-glass absolute left-4 top-4 text-slate-600"></i>
-                        <input id="search" oninput="loadJobs()" placeholder="Filter jobs list..." class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-11 pr-4 py-3 text-sm outline-none focus:border-indigo-500">
+
+                        <i
+                            class="fa-solid fa-magnifying-glass absolute left-4 top-4 text-slate-600"></i>
+
+                        <input id="search"
+                            oninput="loadJobs()"
+                            placeholder="Search job title, company or skills..."
+                            class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-11 pr-4 py-3 text-sm outline-none focus:border-indigo-500">
+
                     </div>
+
 
                     <div class="relative">
-                        <i class="fa-solid fa-location-dot absolute left-4 top-4 text-slate-600"></i>
-                        <input id="citySearch" oninput="loadJobs()" placeholder="Search by city..." class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-11 pr-4 py-3 text-sm outline-none focus:border-indigo-500">
+
+                        <i
+                            class="fa-solid fa-location-dot absolute left-4 top-4 text-slate-600"></i>
+
+                        <input id="citySearch"
+                            oninput="loadJobs()"
+                            placeholder="Search by city..."
+                            class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-11 pr-4 py-3 text-sm outline-none focus:border-indigo-500">
+
                     </div>
+
                 </div>
 
+
                 <div id="jobs" class="mt-6 space-y-4"></div>
+
             </div>
+
         </section>
 
-        <!-- APPLICATIONS -->
+
+        <!-- =====================================================
+             APPLICATION HISTORY
+        ====================================================== -->
+
         <section>
+
             <div class="mb-5">
-                <p class="text-indigo-400 text-xs font-bold uppercase tracking-widest">Application activity</p>
-                <h2 class="font-display text-2xl font-bold mt-1">Your application results</h2>
-                <p class="text-sm text-slate-500 mt-1">Review your AI match score and areas to improve.</p>
+
+                <p class="text-indigo-400 text-xs font-bold uppercase tracking-widest">
+                    Career progress
+                </p>
+
+                <h2 class="font-display text-2xl font-bold mt-1">
+                    Your application results
+                </h2>
+
+                <p class="text-sm text-slate-500 mt-1">
+                    See your AI match score, CV feedback and recommended improvements.
+                </p>
+
             </div>
 
-            <div id="applications" class="grid md:grid-cols-2 gap-5"></div>
+
+            <div id="applications"
+                class="grid md:grid-cols-2 gap-5">
+            </div>
+
         </section>
 
     </main>
 
-    <!-- APPLY MODAL -->
-    <div id="applyModal" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm items-center justify-center p-5">
-        <div class="w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl p-7">
+
+    <!-- =====================================================
+         APPLY MODAL
+    ====================================================== -->
+
+    <div id="applyModal"
+        class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm items-center justify-center p-5">
+
+        <div
+            class="w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl p-7">
+
+
             <div class="flex justify-between items-center">
+
                 <div>
-                    <p class="text-xs text-indigo-400 uppercase tracking-widest">Application</p>
-                    <h2 class="font-display text-xl font-bold mt-1">Apply for this role</h2>
+
+                    <p class="text-xs text-indigo-400 uppercase tracking-widest">
+                        Application
+                    </p>
+
+                    <h2 class="font-display text-xl font-bold mt-1">
+                        Apply for this role
+                    </h2>
+
                 </div>
-                <button onclick="closeModal()" class="text-slate-500 hover:text-white">
+
+
+                <button onclick="closeModal()"
+                    class="text-slate-500 hover:text-white">
+
                     <i class="fa-solid fa-xmark text-xl"></i>
+
                 </button>
+
             </div>
 
-            <p id="selectedJob" class="text-sm text-slate-500 mt-3"></p>
+
+            <p id="selectedJob"
+                class="text-sm text-slate-500 mt-3">
+            </p>
+
 
             <div class="mt-6">
-                <label class="text-xs text-slate-400 block mb-2">Upload your CV</label>
-                <input id="resume" type="file" accept=".pdf" class="w-full text-sm text-slate-400 bg-slate-950 border border-slate-800 rounded-xl p-3">
-                <p class="text-xs text-slate-600 mt-2">PDF format only.</p>
+
+                <label class="text-xs text-slate-400 block mb-2">
+                    Upload your CV
+                </label>
+
+                <input id="resume"
+                    type="file"
+                    accept=".pdf"
+                    class="w-full text-sm text-slate-400 bg-slate-950 border border-slate-800 rounded-xl p-3">
+
+                <p class="text-xs text-slate-600 mt-2">
+                    PDF format only.
+                </p>
+
             </div>
 
-            <button onclick="submitApplication()" class="w-full mt-6 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 font-semibold">
-                <i class="fa-solid fa-wand-magic-sparkles mr-2"></i> Analyze & Submit CV
+
+            <button onclick="submitApplication()"
+                class="w-full mt-6 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 font-semibold transition">
+
+                <i class="fa-solid fa-wand-magic-sparkles mr-2"></i>
+
+                Analyze CV & Apply
+
             </button>
 
-            <div id="applyError" class="hidden mt-4 text-sm text-rose-400"></div>
+
+            <div id="applyError"
+                class="hidden mt-4 text-sm text-rose-400">
+            </div>
+
         </div>
+
     </div>
 
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
     <script>
-        const user = JSON.parse(localStorage.getItem("ch_user") || "null");
+
+
+        /* =====================================================
+           AUTH
+        ====================================================== */
+
+        const user =
+            JSON.parse(localStorage.getItem("ch_user") || "null");
+
 
         if (!user || user.role !== "candidate") {
+
             window.location.href = "/login";
+
         }
 
+
         let selectedJobId = null;
+
         let allFetchedJobs = [];
 
+
+        /* =====================================================
+           SECURITY HELPERS
+        ====================================================== */
+
         function escapeHtml(value) {
+
             return String(value ?? "")
                 .replaceAll("&", "&amp;")
                 .replaceAll("<", "&lt;")
                 .replaceAll(">", "&gt;")
                 .replaceAll('"', "&quot;")
                 .replaceAll("'", "&#039;");
+
         }
 
+
         function escapeJs(value) {
+
             return String(value ?? "")
                 .replaceAll("\\", "\\\\")
                 .replaceAll("'", "\\'")
                 .replaceAll("\n", " ");
+
         }
 
-        /* =========================================================
-        PROFILE
-        ========================================================= */
+
+        /* =====================================================
+           PROFILE
+        ====================================================== */
 
         function loadProfile() {
-            document.getElementById("profileName").value = user.name || "";
-            document.getElementById("profileEmail").value = user.email || "";
-            document.getElementById("profileCity").value = user.city || "";
-            document.getElementById("profileBio").value = user.bio || "";
 
-            document.getElementById("userName").textContent = user.name || "Candidate";
-            document.getElementById("userCity").textContent = user.city ? user.city : "Complete your profile";
+            document.getElementById("profileName").value =
+                user.name || "";
+
+            document.getElementById("profileEmail").value =
+                user.email || "";
+
+            document.getElementById("profileCity").value =
+                user.city || "";
+
+            document.getElementById("profileBio").value =
+                user.bio || "";
+
+
+            document.getElementById("userName").textContent =
+                user.name || "Candidate";
+
+
+            document.getElementById("userCity").textContent =
+                user.city || "Complete your profile";
+
         }
 
+
         async function saveProfile() {
-            const name = document.getElementById("profileName").value.trim();
-            const city = document.getElementById("profileCity").value.trim();
-            const bio = document.getElementById("profileBio").value.trim();
+
+            const name =
+                document.getElementById("profileName").value.trim();
+
+            const city =
+                document.getElementById("profileCity").value.trim();
+
+            const bio =
+                document.getElementById("profileBio").value.trim();
+
+
+            if (!name) {
+
+                showProfileMessage(
+                    "Please enter your name.",
+                    false
+                );
+
+                return;
+
+            }
+
 
             const formData = new FormData();
+
             formData.append("candidate_id", user.id);
             formData.append("name", name);
             formData.append("city", city);
             formData.append("bio", bio);
 
-            try {
-                const response = await fetch("/api/candidate/profile", {
-                    method: "POST",
-                    body: formData
-                });
 
-                const data = await response.json();
+            try {
+
+                const response =
+                    await fetch("/api/candidate/profile", {
+                        method: "POST",
+                        body: formData
+                    });
+
+
+                const data =
+                    await response.json();
+
 
                 if (!response.ok) {
-                    document.getElementById("profileMessage").textContent = data.detail || "Could not update profile.";
-                    document.getElementById("profileMessage").className = "ml-3 text-sm text-rose-400";
+
+                    showProfileMessage(
+                        data.detail || "Could not update profile.",
+                        false
+                    );
+
                     return;
+
                 }
+
 
                 user.name = name;
                 user.city = city;
                 user.bio = bio;
 
-                localStorage.setItem("ch_user", JSON.stringify(user));
 
-                document.getElementById("userName").textContent = name;
-                document.getElementById("userCity").textContent = city || "Complete your profile";
+                localStorage.setItem(
+                    "ch_user",
+                    JSON.stringify(user)
+                );
 
-                document.getElementById("profileMessage").textContent = "Profile saved successfully.";
-                document.getElementById("profileMessage").className = "ml-3 text-sm text-emerald-400";
+
+                document.getElementById("userName").textContent =
+                    name;
+
+                document.getElementById("userCity").textContent =
+                    city || "Complete your profile";
+
+
+                showProfileMessage(
+                    "Profile saved successfully.",
+                    true
+                );
+
 
             } catch (error) {
+
                 console.error(error);
+
+                showProfileMessage(
+                    "Unable to connect with server.",
+                    false
+                );
+
             }
+
         }
 
-        /* =========================================================
-        JOBS
-        ========================================================= */
+
+        function showProfileMessage(message, success) {
+
+            const element =
+                document.getElementById("profileMessage");
+
+
+            element.textContent = message;
+
+            element.className =
+                success
+                    ? "ml-3 text-sm text-emerald-400"
+                    : "ml-3 text-sm text-rose-400";
+
+        }
+
+
+        /* =====================================================
+           JOBS
+        ====================================================== */
 
         async function loadJobs() {
-            const search = document.getElementById("search").value.trim().toLowerCase();
-            const city = document.getElementById("citySearch").value.trim();
 
-            const params = new URLSearchParams();
+            const search =
+                document.getElementById("search")
+                    .value
+                    .trim()
+                    .toLowerCase();
+
+
+            const city =
+                document.getElementById("citySearch")
+                    .value
+                    .trim();
+
+
+            const params =
+                new URLSearchParams();
+
+
             if (city) {
+
                 params.append("city", city);
+
             }
 
-            const url = "/api/jobs?" + params.toString();
 
             try {
-                const response = await fetch(url);
-                const data = await response.json();
-                
-                allFetchedJobs = data.jobs || [];
 
-                let filteredJobs = allFetchedJobs.filter(job => {
-                    if (!search) return true;
-                    return (
-                        (job.title && job.title.toLowerCase().includes(search)) ||
-                        (job.company && job.company.toLowerCase().includes(search)) ||
-                        (job.description && job.description.toLowerCase().includes(search))
+                const response =
+                    await fetch(
+                        "/api/jobs?" +
+                        params.toString()
                     );
-                });
 
-                const container = document.getElementById("jobs");
 
-                if (!filteredJobs.length) {
-                    container.innerHTML = `
-                        <div class="p-10 text-center border border-dashed border-slate-800 rounded-2xl">
-                            <i class="fa-solid fa-magnifying-glass text-slate-700 text-2xl"></i>
-                            <p class="text-sm text-slate-500 mt-3">No opportunities found for your search.</p>
-                        </div>
-                    `;
+                const data =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    console.error(data);
+
                     return;
+
                 }
 
-                container.innerHTML = filteredJobs.map(job => `
-                    <div class="p-6 rounded-2xl border border-slate-800 bg-slate-950/60 hover:border-indigo-500/50 transition">
-                        <div class="flex flex-col md:flex-row justify-between gap-5">
-                            <div>
-                                <h3 class="font-display font-bold text-xl">${escapeHtml(job.title)}</h3>
-                                <p class="text-indigo-400 text-sm mt-1">${escapeHtml(job.company)}</p>
-                            </div>
-                            <span class="text-xs px-3 py-1.5 rounded-full bg-indigo-500/10 text-indigo-300 h-fit">
-                                ${escapeHtml(job.job_type)}
-                            </span>
-                        </div>
 
-                        <div class="flex flex-wrap gap-4 text-xs text-slate-500 mt-5">
-                            <span><i class="fa-solid fa-location-dot mr-1"></i>${escapeHtml(job.city)}</span>
-                            <span><i class="fa-solid fa-money-bill mr-1"></i>${escapeHtml(job.salary)}</span>
-                        </div>
+                allFetchedJobs =
+                    data.jobs || [];
 
-                        <p class="text-sm text-slate-400 leading-6 mt-5">
-                            ${escapeHtml(job.description || "Explore this opportunity and see how your CV matches its requirements.")}
-                        </p>
 
-                        <button onclick="openApply(${job.id}, '${escapeJs(job.title)}')" class="mt-6 px-5 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-sm font-semibold">
-                            Apply with CV <i class="fa-solid fa-arrow-right ml-2 text-xs"></i>
-                        </button>
-                    </div>
-                `).join("");
+                const filteredJobs =
+                    allFetchedJobs.filter(job => {
+
+                        if (!search) {
+
+                            return true;
+
+                        }
+
+
+                        return (
+
+                            (job.title &&
+                                job.title
+                                    .toLowerCase()
+                                    .includes(search))
+
+                            ||
+
+                            (job.company &&
+                                job.company
+                                    .toLowerCase()
+                                    .includes(search))
+
+                            ||
+
+                            (job.description &&
+                                job.description
+                                    .toLowerCase()
+                                    .includes(search))
+
+                        );
+
+                    });
+
+
+                renderJobs(filteredJobs);
+
 
             } catch (error) {
+
                 console.error(error);
+
             }
+
         }
 
-        /* =========================================================
-        APPLICATION MODAL
-        ========================================================= */
+
+        function renderJobs(jobs) {
+
+            const container =
+                document.getElementById("jobs");
+
+
+            if (!jobs.length) {
+
+                container.innerHTML = `
+
+                    <div class="p-10 text-center border border-dashed border-slate-800 rounded-2xl">
+
+                        <i class="fa-solid fa-briefcase text-slate-700 text-2xl"></i>
+
+                        <p class="text-sm text-slate-500 mt-3">
+                            No opportunities found.
+                        </p>
+
+                        <p class="text-xs text-slate-600 mt-1">
+                            Try another job title, company or city.
+                        </p>
+
+                    </div>
+
+                `;
+
+                return;
+
+            }
+
+
+            container.innerHTML =
+                jobs.map(job => `
+
+                    <div
+                        class="p-6 rounded-2xl border border-slate-800 bg-slate-950/60 hover:border-indigo-500/50 transition">
+
+                        <div
+                            class="flex flex-col md:flex-row justify-between gap-5">
+
+                            <div>
+
+                                <h3
+                                    class="font-display font-bold text-xl">
+
+                                    ${escapeHtml(job.title)}
+
+                                </h3>
+
+                                <p
+                                    class="text-indigo-400 text-sm mt-1">
+
+                                    ${escapeHtml(job.company)}
+
+                                </p>
+
+                            </div>
+
+
+                            <span
+                                class="text-xs px-3 py-1.5 rounded-full bg-indigo-500/10 text-indigo-300 h-fit">
+
+                                ${escapeHtml(job.job_type)}
+
+                            </span>
+
+                        </div>
+
+
+                        <div
+                            class="flex flex-wrap gap-4 text-xs text-slate-500 mt-5">
+
+                            <span>
+
+                                <i class="fa-solid fa-location-dot mr-1"></i>
+
+                                ${escapeHtml(job.city)}
+
+                            </span>
+
+
+                            <span>
+
+                                <i class="fa-solid fa-money-bill mr-1"></i>
+
+                                ${escapeHtml(job.salary)}
+
+                            </span>
+
+                        </div>
+
+
+                        <p
+                            class="text-sm text-slate-400 leading-6 mt-5 line-clamp-3">
+
+                            ${escapeHtml(
+                                job.description ||
+                                "No description provided."
+                            )}
+
+                        </p>
+
+
+                        <button
+                            onclick="openApply(${job.id}, '${escapeJs(job.title)}')"
+                            class="mt-6 px-5 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-sm font-semibold transition">
+
+                            Apply with CV
+
+                            <i
+                                class="fa-solid fa-arrow-right ml-2 text-xs">
+                            </i>
+
+                        </button>
+
+                    </div>
+
+                `).join("");
+
+        }
+
+
+        /* =====================================================
+           APPLY MODAL
+        ====================================================== */
 
         function openApply(id, title) {
-            selectedJobId = id;
-            document.getElementById("selectedJob").textContent = title;
-            document.getElementById("applyError").classList.add("hidden");
 
-            document.getElementById("applyModal").classList.remove("hidden");
-            document.getElementById("applyModal").classList.add("flex");
+            selectedJobId = id;
+
+
+            document.getElementById("selectedJob")
+                .textContent = title;
+
+
+            document.getElementById("resume").value = "";
+
+
+            document.getElementById("applyError")
+                .classList.add("hidden");
+
+
+            const modal =
+                document.getElementById("applyModal");
+
+
+            modal.classList.remove("hidden");
+
+            modal.classList.add("flex");
+
         }
+
 
         function closeModal() {
-            document.getElementById("applyModal").classList.add("hidden");
-            document.getElementById("applyModal").classList.remove("flex");
+
+            const modal =
+                document.getElementById("applyModal");
+
+
+            modal.classList.add("hidden");
+
+            modal.classList.remove("flex");
+
         }
 
-        /* =========================================================
-        APPLICATION SUBMIT
-        ========================================================= */
+
+        /* =====================================================
+           APPLY JOB
+        ====================================================== */
 
         async function submitApplication() {
-            const file = document.getElementById("resume").files[0];
-            const error = document.getElementById("applyError");
+
+            const file =
+                document.getElementById("resume")
+                    .files[0];
+
+
+            const error =
+                document.getElementById("applyError");
+
 
             if (!file) {
-                error.textContent = "Please select your CV.";
-                error.classList.remove("hidden");
+
+                showApplyError(
+                    "Please select your CV before applying."
+                );
+
                 return;
+
             }
 
-            if (!file.name.toLowerCase().endsWith(".pdf")) {
-                error.textContent = "Only PDF CV files are allowed.";
-                error.classList.remove("hidden");
+
+            if (
+                !file.name
+                    .toLowerCase()
+                    .endsWith(".pdf")
+            ) {
+
+                showApplyError(
+                    "Only PDF CV files are allowed."
+                );
+
                 return;
+
             }
 
-            const formData = new FormData();
-            formData.append("job_id", selectedJobId);
-            formData.append("candidate_id", user.id);
-            formData.append("resume", file);
+
+            const formData =
+                new FormData();
+
+
+            formData.append(
+                "job_id",
+                selectedJobId
+            );
+
+
+            formData.append(
+                "candidate_id",
+                user.id
+            );
+
+
+            formData.append(
+                "resume",
+                file
+            );
+
 
             error.classList.add("hidden");
 
-            try {
-                const response = await fetch("/api/apply", {
-                    method: "POST",
-                    body: formData
-                });
 
-                const data = await response.json();
+            try {
+
+                const response =
+                    await fetch("/api/apply", {
+                        method: "POST",
+                        body: formData
+                    });
+
+
+                const data =
+                    await response.json();
+
 
                 if (!response.ok) {
-                    error.textContent = data.detail || "Application failed.";
-                    error.classList.remove("hidden");
+
+                    showApplyError(
+                        data.detail ||
+                        "Application failed."
+                    );
+
                     return;
+
                 }
 
-                const analysis = data.analysis;
-                let matching = analysis.matching_skills || [];
-                let missing = analysis.missing_skills || [];
 
-                alert(
-                    "Application submitted successfully!\n\n" +
-                    "AI Match Score: " + analysis.score_percentage + "%\n\n" +
-                    "Matching Skills: " + (matching.length ? matching.join(", ") : "None identified") + "\n\n" +
-                    "Skills to Improve: " + (missing.length ? missing.join(", ") : "No major gaps identified")
-                );
+                const analysis =
+                    data.analysis || {};
+
 
                 closeModal();
+
+
                 document.getElementById("resume").value = "";
 
-                loadApplications();
+
+                showAnalysisResult(analysis);
+
+
+                await loadApplications();
+
 
             } catch (error) {
+
                 console.error(error);
-                error.textContent = "Something went wrong while submitting your application.";
-                error.classList.remove("hidden");
+
+                showApplyError(
+                    "Something went wrong while submitting your application."
+                );
+
             }
+
         }
 
-        /* =========================================================
-        APPLICATION HISTORY
-        ========================================================= */
+
+        function showApplyError(message) {
+
+            const error =
+                document.getElementById("applyError");
+
+
+            error.textContent = message;
+
+            error.classList.remove("hidden");
+
+        }
+
+
+        /* =====================================================
+           AI RESULT AFTER APPLY
+        ====================================================== */
+
+        function showAnalysisResult(analysis) {
+
+            const score =
+                Number(analysis.score_percentage || 0);
+
+
+            const matching =
+                Array.isArray(analysis.matching_skills)
+                    ? analysis.matching_skills
+                    : [];
+
+
+            const improvements =
+                Array.isArray(analysis.missing_skills)
+                    ? analysis.missing_skills
+                    : [];
+
+
+            const summary =
+                analysis.short_summary ||
+                analysis.feedback ||
+                "AI evaluation completed successfully.";
+
+
+            let improvementText =
+                improvements.length
+                    ? improvements.join(", ")
+                    : "No major improvements identified.";
+
+
+            alert(
+
+                "AI Resume Analysis\n\n" +
+
+                "Match Score: " +
+                score +
+                "%\n\n" +
+
+                "AI Feedback:\n" +
+                summary +
+                "\n\n" +
+
+                "Matching Skills:\n" +
+                (
+                    matching.length
+                        ? matching.join(", ")
+                        : "No matching skills identified."
+                ) +
+
+                "\n\n" +
+
+                "AI Suggested Improvements:\n" +
+                improvementText
+
+            );
+
+        }
+
+
+        /* =====================================================
+           APPLICATION HISTORY
+        ====================================================== */
 
         async function loadApplications() {
+
             try {
-                // Fetch all jobs to cross-reference applied jobs
-                if (allFetchedJobs.length === 0) {
-                    const jobsRes = await fetch("/api/jobs");
-                    const jobsData = await jobsRes.json();
-                    allFetchedJobs = jobsData.jobs || [];
+
+                if (!allFetchedJobs.length) {
+
+                    const jobsRes =
+                        await fetch("/api/jobs");
+
+
+                    const jobsData =
+                        await jobsRes.json();
+
+
+                    allFetchedJobs =
+                        jobsData.jobs || [];
+
                 }
+
 
                 let myApplications = [];
 
-                // Fetch application history for each job
-                for (let job of allFetchedJobs) {
+
+                for (const job of allFetchedJobs) {
+
                     try {
-                        const appRes = await fetch(`/api/applications/${job.id}`);
-                        if (appRes.ok) {
-                            const appData = await appRes.json();
-                            const userApps = (appData.applications || []).filter(a => a.candidate_id === user.id);
-                            myApplications.push(...userApps);
+
+                        const appRes =
+                            await fetch(
+                                `/api/applications/${job.id}`
+                            );
+
+
+                        if (!appRes.ok) {
+
+                            continue;
+
                         }
-                    } catch (e) {
-                        console.error(e);
+
+
+                        const appData =
+                            await appRes.json();
+
+
+                        const userApps =
+                            (appData.applications || [])
+                                .filter(
+                                    app =>
+                                        Number(app.candidate_id) ===
+                                        Number(user.id)
+                                );
+
+
+                        myApplications.push(
+                            ...userApps
+                        );
+
+
+                    } catch (error) {
+
+                        console.error(error);
+
                     }
+
                 }
 
-                document.getElementById("applicationCount").textContent = myApplications.length;
 
-                const container = document.getElementById("applications");
+                myApplications.sort(
+                    (a, b) =>
+                        new Date(b.applied_at) -
+                        new Date(a.applied_at)
+                );
 
-                if (!myApplications.length) {
-                    container.innerHTML = `
-                        <div class="md:col-span-2 p-10 text-center rounded-3xl border border-dashed border-slate-800">
-                            <i class="fa-solid fa-file-circle-plus text-slate-700 text-2xl"></i>
-                            <p class="text-slate-500 text-sm mt-3">You haven't submitted any applications yet.</p>
-                        </div>
-                    `;
-                    return;
-                }
 
-                container.innerHTML = myApplications.map(app => `
-                    <div class="p-6 rounded-3xl bg-slate-900 border border-slate-800">
-                        <div class="flex justify-between gap-4">
-                            <div>
-                                <h3 class="font-display font-bold text-lg">${escapeHtml(app.job_title)}</h3>
-                                <p class="text-sm text-indigo-400 mt-1">${escapeHtml(app.company_name)}</p>
-                                <p class="text-xs text-slate-600 mt-2">
-                                    <i class="fa-solid fa-location-dot mr-1"></i>${escapeHtml(app.location)}
-                                </p>
-                            </div>
+                document.getElementById(
+                    "applicationCount"
+                ).textContent =
+                    myApplications.length;
 
-                            <div class="text-right">
-                                <div class="text-3xl font-display font-extrabold text-indigo-400">${app.score_percentage}%</div>
-                                <p class="text-[10px] text-slate-600 uppercase">AI match</p>
-                            </div>
-                        </div>
 
-                        <div class="mt-5 p-4 rounded-2xl bg-slate-950 border border-slate-800">
-                            <p class="text-xs text-slate-500 uppercase tracking-wider">AI Feedback</p>
-                            <p class="text-sm text-slate-400 leading-6 mt-2">${escapeHtml(app.feedback)}</p>
-                        </div>
+                renderApplications(
+                    myApplications
+                );
 
-                        <div class="mt-5">
-                            <p class="text-xs text-slate-500 uppercase tracking-wider mb-2">Matching skills</p>
-                            <div class="flex flex-wrap gap-2">
-                                ${app.matching_skills && app.matching_skills.length
-                                    ? app.matching_skills.map(skill => `<span class="px-3 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-300 text-xs">${escapeHtml(skill)}</span>`).join("")
-                                    : `<span class="text-xs text-slate-600">No matching skills identified</span>`}
-                            </div>
-                        </div>
-
-                        <div class="mt-5">
-                            <p class="text-xs text-slate-500 uppercase tracking-wider mb-2">Skills to improve</p>
-                            <div class="flex flex-wrap gap-2">
-                                ${app.missing_skills && app.missing_skills.length
-                                    ? app.missing_skills.map(skill => `<span class="px-3 py-1.5 rounded-lg bg-rose-500/10 text-rose-300 text-xs">${escapeHtml(skill)}</span>`).join("")
-                                    : `<span class="text-xs text-emerald-400">No major skill gaps identified</span>`}
-                            </div>
-                        </div>
-
-                        <div class="mt-5 text-xs text-slate-600">Applied: ${escapeHtml(app.applied_at)}</div>
-                    </div>
-                `).join("");
 
             } catch (error) {
+
                 console.error(error);
+
             }
+
         }
 
-        /* =========================================================
-        LOGOUT
-        ========================================================= */
+
+        /* =====================================================
+           RENDER APPLICATIONS
+        ====================================================== */
+
+        function renderApplications(applications) {
+
+            const container =
+                document.getElementById("applications");
+
+
+            if (!applications.length) {
+
+                container.innerHTML = `
+
+                    <div
+                        class="md:col-span-2 p-10 text-center rounded-3xl border border-dashed border-slate-800">
+
+                        <i
+                            class="fa-solid fa-file-circle-plus text-slate-700 text-2xl">
+                        </i>
+
+                        <p
+                            class="text-slate-500 text-sm mt-3">
+
+                            You haven't submitted any applications yet.
+
+                        </p>
+
+                        <p
+                            class="text-xs text-slate-600 mt-1">
+
+                            Apply for a job to receive your AI CV analysis.
+
+                        </p>
+
+                    </div>
+
+                `;
+
+                return;
+
+            }
+
+
+            container.innerHTML =
+                applications.map(app => {
+
+
+                    const score =
+                        Number(
+                            app.score_percentage || 0
+                        );
+
+
+                    const matching =
+                        Array.isArray(app.matching_skills)
+                            ? app.matching_skills
+                            : [];
+
+
+                    const improvements =
+                        Array.isArray(app.missing_skills)
+                            ? app.missing_skills
+                            : [];
+
+
+                    const scoreLabel =
+                        score >= 80
+                            ? "Strong match"
+                            : score >= 60
+                                ? "Good potential"
+                                : score >= 40
+                                    ? "Needs improvement"
+                                    : "Low match";
+
+
+                    const scoreClass =
+                        score >= 80
+                            ? "text-emerald-400"
+                            : score >= 60
+                                ? "text-indigo-400"
+                                : score >= 40
+                                    ? "text-amber-400"
+                                    : "text-rose-400";
+
+
+                    return `
+
+                        <div
+                            class="p-6 rounded-3xl bg-slate-900 border border-slate-800">
+
+
+                            <!-- HEADER -->
+
+                            <div
+                                class="flex justify-between gap-5">
+
+                                <div>
+
+                                    <h3
+                                        class="font-display font-bold text-lg">
+
+                                        ${escapeHtml(app.job_title)}
+
+                                    </h3>
+
+
+                                    <p
+                                        class="text-sm text-indigo-400 mt-1">
+
+                                        ${escapeHtml(app.company_name)}
+
+                                    </p>
+
+
+                                    <p
+                                        class="text-xs text-slate-600 mt-2">
+
+                                        <i
+                                            class="fa-solid fa-location-dot mr-1">
+                                        </i>
+
+                                        ${escapeHtml(app.location)}
+
+                                    </p>
+
+                                </div>
+
+
+                                <!-- SCORE -->
+
+                                <div class="text-right">
+
+                                    <div
+                                        class="text-3xl font-display font-extrabold ${scoreClass}">
+
+                                        ${score}%
+
+                                    </div>
+
+                                    <p
+                                        class="text-[10px] text-slate-600 uppercase">
+
+                                        AI match
+
+                                    </p>
+
+
+                                    <span
+                                        class="inline-block mt-2 text-[10px] px-2.5 py-1 rounded-full bg-slate-800 text-slate-400">
+
+                                        ${scoreLabel}
+
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- AI FEEDBACK -->
+
+                            <div
+                                class="mt-5 p-4 rounded-2xl bg-slate-950 border border-slate-800">
+
+                                <div
+                                    class="flex items-center gap-2">
+
+                                    <i
+                                        class="fa-solid fa-wand-magic-sparkles text-indigo-400">
+                                    </i>
+
+                                    <p
+                                        class="text-xs text-indigo-400 uppercase tracking-wider font-semibold">
+
+                                        AI CV Feedback
+
+                                    </p>
+
+                                </div>
+
+
+                                <p
+                                    class="text-sm text-slate-400 leading-6 mt-3">
+
+                                    ${escapeHtml(
+                                        app.feedback ||
+                                        "No AI feedback available."
+                                    )}
+
+                                </p>
+
+                            </div>
+
+
+                            <!-- MATCHING SKILLS -->
+
+                            <div class="mt-5">
+
+                                <p
+                                    class="text-xs text-slate-500 uppercase tracking-wider mb-2">
+
+                                    Skills matching this role
+
+                                </p>
+
+
+                                <div
+                                    class="flex flex-wrap gap-2">
+
+                                    ${
+                                        matching.length
+                                            ? matching
+                                                .map(
+                                                    skill => `
+
+                                                        <span
+                                                            class="px-3 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-300 text-xs">
+
+                                                            <i
+                                                                class="fa-solid fa-check mr-1">
+                                                            </i>
+
+                                                            ${escapeHtml(skill)}
+
+                                                        </span>
+
+                                                    `
+                                                )
+                                                .join("")
+                                            : `
+
+                                                <span
+                                                    class="text-xs text-slate-600">
+
+                                                    No matching skills identified.
+
+                                                </span>
+
+                                            `
+                                    }
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- AI SUGGESTED IMPROVEMENTS -->
+
+                            <div
+                                class="mt-5 p-4 rounded-2xl bg-amber-500/5 border border-amber-500/10">
+
+                                <div
+                                    class="flex items-center gap-2">
+
+                                    <i
+                                        class="fa-solid fa-arrow-trend-up text-amber-400">
+                                    </i>
+
+                                    <p
+                                        class="text-xs text-amber-400 uppercase tracking-wider font-semibold">
+
+                                        AI Suggested Improvements
+
+                                    </p>
+
+                                </div>
+
+
+                                <p
+                                    class="text-xs text-slate-500 mt-2">
+
+                                    Based on your CV and this job description,
+                                    AI identified these areas that could improve
+                                    your application.
+
+                                </p>
+
+
+                                <div
+                                    class="flex flex-wrap gap-2 mt-3">
+
+                                    ${
+                                        improvements.length
+                                            ? improvements
+                                                .map(
+                                                    skill => `
+
+                                                        <span
+                                                            class="px-3 py-1.5 rounded-lg bg-amber-500/10 text-amber-300 text-xs">
+
+                                                            <i
+                                                                class="fa-solid fa-lightbulb mr-1">
+                                                            </i>
+
+                                                            ${escapeHtml(skill)}
+
+                                                        </span>
+
+                                                    `
+                                                )
+                                                .join("")
+                                            : `
+
+                                                <span
+                                                    class="text-xs text-emerald-400">
+
+                                                    No major improvement areas identified.
+
+                                                </span>
+
+                                            `
+                                    }
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- APPLICATION DATE -->
+
+                            <div
+                                class="mt-5 pt-4 border-t border-slate-800 flex justify-between items-center">
+
+                                <span
+                                    class="text-xs text-slate-600">
+
+                                    Applied
+
+                                </span>
+
+                                <span
+                                    class="text-xs text-slate-500">
+
+                                    ${escapeHtml(
+                                        formatDate(app.applied_at)
+                                    )}
+
+                                </span>
+
+                            </div>
+
+
+                        </div>
+
+                    `;
+
+                }).join("");
+
+        }
+
+
+        /* =====================================================
+           DATE FORMAT
+        ====================================================== */
+
+        function formatDate(dateString) {
+
+            if (!dateString) {
+
+                return "Recently";
+
+            }
+
+
+            const date =
+                new Date(dateString);
+
+
+            if (Number.isNaN(date.getTime())) {
+
+                return dateString;
+
+            }
+
+
+            return date.toLocaleString(
+                "en-US",
+                {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                    hour: "numeric",
+                    minute: "2-digit"
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           LOGOUT
+        ====================================================== */
 
         function logout() {
+
             localStorage.removeItem("ch_user");
+
             window.location.href = "/login";
+
         }
 
-        /* =========================================================
-        START
-        ========================================================= */
+
+        /* =====================================================
+           INITIAL LOAD
+        ====================================================== */
 
         loadProfile();
+
         loadJobs();
+
         loadApplications();
+
     </script>
 
 </body>
