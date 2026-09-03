@@ -3,9 +3,11 @@ import json
 import sqlite3
 from datetime import datetime
 from typing import Optional
+from dotenv import load_dotenv
 
 import pdfplumber
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 
 from fastapi import FastAPI, Form, File, UploadFile, HTTPException
 from fastapi.responses import HTMLResponse, FileResponse
@@ -15,19 +17,24 @@ from fastapi.responses import HTMLResponse, FileResponse
 # APP CONFIGURATION
 # =========================================================
 
+load_dotenv()
+
 app = FastAPI(title="Career Hub")
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 DB_FILE = os.path.join(BASE_DIR, "portal.db")
 
-GEMINI_API_KEY = os.environ.get(
-    "GEMINI_API_KEY",
-    "YOUR_GEMINI_API_KEY"
-)
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
 
-if GEMINI_API_KEY and not GEMINI_API_KEY.startswith("YOUR_"):
-    genai.configure(api_key=GEMINI_API_KEY)
+gemini_client = None
+
+if GEMINI_API_KEY:
+    try:
+        gemini_client = genai.Client(api_key=GEMINI_API_KEY)
+    except Exception as error:
+        print("Gemini client initialization error:", error)
+        gemini_client = None
 
 
 # =========================================================
@@ -248,10 +255,7 @@ def analyze_resume_against_job(resume_text, job_description):
         )
         return fallback
 
-    if (
-        not GEMINI_API_KEY
-        or GEMINI_API_KEY.startswith("YOUR_")
-    ):
+    if not gemini_client:
         return fallback
 
     # -----------------------------------------------------
@@ -329,18 +333,51 @@ Return maximum 8 matching skills and maximum 8 improving skills.
 """
 
     try:
-        model = genai.GenerativeModel("gemini-1.5-flash")
+        # Ask Gemini to return JSON directly. This avoids the common
+        # problem where the model wraps JSON in markdown or adds text.
+        response = gemini_client.models.generate_content(
+            model="gemini-3.7-flash",
+            contents=prompt,
+            config=types.GenerateContentConfig(
+                temperature=0.2,
+                response_mime_type="application/json"
+            )
+        )
 
-        response = model.generate_content(prompt)
+        raw_response = (response.text or "").strip()
 
-        cleaned = clean_ai_json(response.text)
+        if not raw_response:
+            raise ValueError("Gemini returned an empty response.")
+
+        print("Gemini raw response:", raw_response)
+
+        cleaned = clean_ai_json(raw_response)
 
         ai_data = json.loads(cleaned)
 
-        return normalize_ai_result(ai_data)
+        if not isinstance(ai_data, dict):
+            raise ValueError("Gemini response is not a JSON object.")
+
+        result = normalize_ai_result(ai_data)
+
+        # Make sure the feedback is never blank.
+        if not result["feedback"]:
+            result["feedback"] = (
+                "The CV was analyzed successfully, but Gemini did not "
+                "return a detailed feedback summary."
+            )
+
+        return result
 
     except Exception as error:
-        print("AI analysis error:", error)
+        # Keep the real error visible in the terminal so debugging is easy.
+        print("AI analysis error:", repr(error))
+
+        # Return a useful fallback instead of hiding the actual problem.
+        fallback["feedback"] = (
+            "AI analysis could not be completed for this application. "
+            "Please check the server terminal for the Gemini error details."
+        )
 
         return fallback
 
